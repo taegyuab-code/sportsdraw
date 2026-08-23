@@ -516,6 +516,38 @@
     .t-score.muted { color: #6d768d; }
     .t-score.bye-tag { color: #111; }
     .t-score.forced { color: #9b6500; }
+    .t-score.score-cell { padding: 4px; background: #fff; }
+    .score-input {
+      width: 38px; height: 34px; padding: 3px 2px; box-sizing: border-box;
+      border: 1px solid #aeb8ca; border-radius: 7px; background: #fff;
+      color: #18233c; text-align: center; font-size: 15px; font-weight: 950;
+      appearance: textfield; -moz-appearance: textfield;
+    }
+    .score-input::-webkit-inner-spin-button, .score-input::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+    .score-input:focus { outline: 2px solid #9eb2ff; border-color: #5b74e8; }
+    .score-input:disabled { background: #eef1f6; color: #8a93a5; cursor: not-allowed; }
+    .score-value { min-width: 26px; text-align: center; font-size: 13px; font-weight: 950; color: #17213a; }
+    .score-waiting { font-size: 9px; color: #8992a5; font-weight: 850; }
+    .t-row.match-winner { background: #e7f7ef; box-shadow: inset 0 0 0 1px #9fd7bc; }
+    .t-row.match-winner .t-team-main { background: #e7f7ef; }
+    .t-row.match-winner .t-team-name::after {
+      content: '  승'; color: #0a7c4f; font-size: 9px; font-weight: 950;
+    }
+    .t-row.match-loser { background: #f2f3f6; color: #70798c; }
+    .t-row.match-loser .t-team-main { opacity: .72; }
+    .score-warning {
+      display:inline-flex; margin-left:6px; padding:2px 6px; border-radius:999px;
+      background:#fff0f1; color:#b42331; border:1px solid #efc3c8;
+      font-size:9px; font-weight:950; vertical-align:middle;
+    }
+    .score-guide {
+      margin: 0 0 10px; padding: 9px 11px; border: 1px solid #bfdccb; border-radius: 11px;
+      background: #eef9f3; color: #176242; font-size: 11px; font-weight: 800; line-height: 1.5;
+    }
+    .champion-banner {
+      margin: 8px 0 10px; padding: 10px 12px; border: 1px solid #e0c36a; border-radius: 12px;
+      background: #fff8dd; color: #7b5700; text-align: center; font-size: 13px; font-weight: 950;
+    }
     .t-legend {
       margin-top: 14px; display: flex; gap: 8px; flex-wrap: wrap;
     }
@@ -714,6 +746,9 @@
       .t-team-name { font-size: var(--print-team-font, 9px); line-height: 1.08; }
       .t-team-sub { font-size: var(--print-sub-font, 6px); line-height: 1.05; }
       .t-score { font-size: var(--print-score-font, 7px); }
+      .score-input { width:100%; height:auto; min-height:0; padding:0; border:0; border-radius:0; background:transparent; font-size:var(--print-score-font, 7px); font-weight:950; }
+      .score-guide { display:none; }
+      .champion-banner { padding:4px 6px; margin:3px 0; font-size:8px; }
       .t-legend { display: none; }
       .bracket-connector-line { stroke-width: 1; }
       .print-meta { display: block; margin-top: 3px; text-align: right; font-size: 6px; color: #666; }
@@ -731,7 +766,7 @@
         <p>종별과 팀 수를 자유롭게 설정하고, 참가팀 명단과 공개 추첨번호로 공정하게 대진을 추첨합니다.</p>
         <div class="local-data-note">※ 모든 데이터는 현재 사용 중인 PC의 브라우저에만 저장되며 다른 사용자와 공유되지 않습니다.</div>
         <div class="maker-credit">제작 <strong>부산백양고 신태규</strong></div>
-        <div class="version-line"><span>현재 버전</span><span class="version-badge" id="currentVersionBadge">v1.4.21</span></div>
+        <div class="version-line"><span>현재 버전</span><span class="version-badge" id="currentVersionBadge">v1.4.22</span></div>
       </div>
       <div class="hero-tools no-print">
         <button class="btn btn-soft" id="fullscreenBtn">전체화면</button>
@@ -937,7 +972,7 @@
       <div class="modal-body">
         <div class="update-status" id="updateStatus">최신 버전 정보를 확인하려면 아래 버튼을 눌러 주세요.</div>
         <div class="update-version-grid">
-          <div class="k">현재 버전</div><div class="v" id="updateCurrentVersion">v1.4.21</div>
+          <div class="k">현재 버전</div><div class="v" id="updateCurrentVersion">v1.4.22</div>
           <div class="k">최신 버전</div><div class="v" id="updateLatestVersion">확인 전</div>
           <div class="k">마지막 업데이트</div><div class="v" id="updateReleasedAt">확인 전</div>
           <div class="k">제작</div><div class="v">부산백양고 신태규</div>
@@ -949,6 +984,7 @@
         <div class="update-notes" style="margin-top:10px">
           <strong>최근 업데이트 이력</strong>
           <ul>
+            <li><strong>v1.4.22</strong> · 경기 점수 입력, 승자 자동 판정, 다음 라운드 자동 진출 및 이후 결과 안전 초기화 기능 추가</li>
             <li><strong>v1.4.21</strong> · 새 대회 시작 시 기본 종별 1개, 참가팀 6팀으로 초기화</li>
             <li><strong>v1.4.20</strong> · 공개 추첨번호 도움말 표시 이벤트를 안정화하여 마우스 오버 시 확실히 노출되도록 수정</li>
             <li><strong>v1.4.19</strong> · 공개 추첨번호 도움말을 화면 기준 자동 위치 방식으로 변경하여 좌우 잘림 현상 해결</li>
@@ -1022,7 +1058,7 @@
     'use strict';
 
     const APP_VERSION = '4.0.0-SCHOOL';
-    const RELEASE_VERSION = '1.4.21';
+    const RELEASE_VERSION = '1.4.22';
     const UPDATE_API_URL = 'https://api.github.com/repos/taegyuab-code/school-sports-draw-updates/contents/latest.json?ref=main';
     const LATEST_HTML_API_URL = 'https://api.github.com/repos/taegyuab-code/school-sports-draw-updates/contents/latest.html?ref=main';
     const UPDATE_SCRIPT_URLS = [];
@@ -1055,6 +1091,7 @@
         publicNumber: '',
         numberProvider: '',
         schedule: { mode: 'combined', showDetails: false, panelCollapsed: true, combined: { startTime: '09:00', durationMinutes: 15, courtCount: 1, preventConsecutive: true, minRestMinutes: 0, finalRestMinutes: 0, finalCourt: 1 }, perDivision: {}, divisionGroups: {}, groupSettings: {}, groupOrder: {} },
+        matchResults: {},
         result: null,
         audit: null
       };
@@ -1742,6 +1779,7 @@
         state = parsed;
         if (!state.appVersion) state.appVersion = APP_VERSION;
         if (!state.schedule) state.schedule = { mode: 'combined', showDetails: false, combined: { startTime: '09:00', durationMinutes: 15, courtCount: 1, preventConsecutive: true, minRestMinutes: 0, finalRestMinutes: 0, finalCourt: 1 }, perDivision: {}, divisionGroups: {}, groupSettings: {}, groupOrder: {} };
+        if (!state.matchResults || typeof state.matchResults !== 'object') state.matchResults = {};
       } catch (e) { console.warn(e); }
     }
 
@@ -2089,6 +2127,7 @@
         const drawnAt = nowIso();
         const drawId = `${drawnAt.slice(0,10).replaceAll('-','')}-${draw.resultHash.slice(0,8).toUpperCase()}`;
         state.result = draw;
+        state.matchResults = {};
         state.audit = {
           drawId,
           drawnAt,
@@ -2825,6 +2864,7 @@
     }
 
     function renderResults() {
+      ensureMatchResultsState();
       const audit = state.audit;
       $('workspaceTitle').textContent = `${state.eventName}${state.sportName ? ` · ${state.sportName}` : ''}`;
       $('workspaceSubtitle').textContent = `추첨번호 ${audit.drawId} · 완료 즉시 자동 확정`;
@@ -2833,7 +2873,7 @@
       const allForPrint = state.result.divisions.map(d =>
         d.divisionId === 'high_m'
           ? highMaleSplitPrintHtml(d)
-          : divisionResultHtml(d, d.divisionId === selectedDivisionId)
+          : divisionResultHtml(d, false)
       ).join('');
       $('workspaceContent').innerHTML = `
         <div class="result-header">
@@ -2851,6 +2891,7 @@
       $('resultXlsxBtn')?.addEventListener('click', exportXlsxBracket);
       bindScheduleEvents();
       bindDrawHelpTooltips();
+      bindScoreInputs();
       document.querySelectorAll('.result-tab').forEach(btn => btn.addEventListener('click', () => {
         selectedDivisionId = btn.dataset.resultId;
         renderDivisionList(); renderResults();
@@ -3010,9 +3051,12 @@
       });
     }
 
-    function divisionResultHtml(d, visible) {
+    function divisionResultHtml(d, interactive) {
       const firstRoundGames = d.rounds[0].filter(m => !m.byeTeam).length;
       const bracketLabel = `${d.bracketSize}강 대진`;
+      const progress = deriveDivisionProgress(d);
+      const finalMatch = progress[progress.length - 1]?.[0];
+      const champion = finalMatch?.winner || '';
       return `<section class="division-result" data-division="${d.divisionId}">
         <div class="print-fit-content">
         <div class="division-banner">
@@ -3020,7 +3064,7 @@
             <h2>${escapeHtml(d.divisionName)} 대진표</h2>
             <p>참가팀 ${d.teamCount}팀 · ${bracketLabel} · 부전승 ${d.byeCount}팀 · 1회전 ${firstRoundGames}경기</p>
           </div>
-          <div class="division-stamp">공개 추첨 확정</div>
+          <div class="division-stamp">${champion ? '🏆 경기 완료' : '공개 추첨 확정'}</div>
         </div>
         <div class="summary-cards">
           <div class="summary-card"><div class="label">종별</div><div class="value">${escapeHtml(d.divisionName)}</div></div>
@@ -3028,19 +3072,22 @@
           <div class="summary-card"><div class="label">부전승</div><div class="value">${d.byeCount}</div></div>
           <div class="summary-card"><div class="label">1회전 경기</div><div class="value">${firstRoundGames}</div></div>
         </div>
+        ${interactive ? `<div class="score-guide">경기 종료 후 두 팀의 점수를 입력하면 승리팀이 자동으로 다음 라운드에 진출합니다. 동점은 자동 진출되지 않습니다.</div>` : ''}
+        ${champion ? `<div class="champion-banner">🏆 ${escapeHtml(d.divisionName)} 우승 · ${escapeHtml(champion)}</div>` : ''}
         ${d.forcedByeCount ? `<div class="notice notice-warning">부전승 제외 팀이 많아 체크된 팀 중 ${d.forcedByeCount}팀이 예외적으로 부전승에 배정되었습니다.</div>` : ''}
         <div class="tournament-board" style="--round-cols:${d.rounds.length}">
           ${d.rounds.map((round, ri) => {
             return `<section class="t-round">
               <div class="t-round-head">${roundTitle(d.bracketSize, ri)}</div>
               <div class="t-round-stack">
-                ${round.map((m, mi) => `<div class="t-match-wrap" data-round="${ri}" data-match="${mi}">${matchCardHtml(m, ri, mi, d.divisionId)}</div>`).join('')}
+                ${round.map((m, mi) => `<div class="t-match-wrap" data-round="${ri}" data-match="${mi}">${matchCardHtml(m, ri, mi, d.divisionId, interactive)}</div>`).join('')}
               </div>
             </section>`;
           }).join('')}
         </div>
         <div class="t-legend">
-          <span class="t-legend-chip normal">부전승 팀은 1회전 열에서 바로 확인할 수 있습니다.</span>
+          <span class="t-legend-chip normal">점수 입력 시 승리팀이 다음 라운드에 자동 진출합니다.</span>
+          <span class="t-legend-chip normal">부전승 팀은 경기 없이 자동 진출합니다.</span>
           ${d.forcedByeCount ? `<span class="t-legend-chip forced">예외 부전승은 노란 표시로 강조됩니다.</span>` : ''}
         </div>
         <div class="print-meta">${escapeHtml(state.eventName)}${state.sportName ? ` · ${escapeHtml(state.sportName)}` : ''} · 추첨번호 ${escapeHtml(state.audit?.drawId || '')}</div>
@@ -3089,6 +3136,175 @@
       return buildHalf('top', '상단') + buildHalf('bottom', '하단');
     }
 
+    function ensureMatchResultsState() {
+      if (!state.matchResults || typeof state.matchResults !== 'object') state.matchResults = {};
+      return state.matchResults;
+    }
+
+    function scoreRecord(divisionId, matchId, create = true) {
+      ensureMatchResultsState();
+      if (!state.matchResults[divisionId]) {
+        if (!create) return null;
+        state.matchResults[divisionId] = {};
+      }
+      if (!state.matchResults[divisionId][matchId]) {
+        if (!create) return null;
+        state.matchResults[divisionId][matchId] = { scoreA: '', scoreB: '' };
+      }
+      return state.matchResults[divisionId][matchId];
+    }
+
+    function normalizeScoreValue(value) {
+      if (value === '' || value == null) return '';
+      const n = Number(value);
+      if (!Number.isFinite(n)) return '';
+      return String(Math.max(0, Math.min(999, Math.trunc(n))));
+    }
+
+    function unresolvedSource(name) {
+      return /^R\d+-M\d+\s*승자$/.test(cleanText(name));
+    }
+
+    function isPlayablePair(a, b) {
+      return Boolean(a && b && a !== '부전승' && b !== '부전승' && !unresolvedSource(a) && !unresolvedSource(b));
+    }
+
+    function winnerFromScores(a, b, scoreA, scoreB) {
+      if (!isPlayablePair(a, b)) return '';
+      if (scoreA === '' || scoreB === '') return '';
+      const sa = Number(scoreA), sb = Number(scoreB);
+      if (!Number.isFinite(sa) || !Number.isFinite(sb) || sa === sb) return '';
+      return sa > sb ? a : b;
+    }
+
+    function deriveDivisionProgress(d) {
+      ensureMatchResultsState();
+      const derived = [];
+      (d.rounds || []).forEach((round, ri) => {
+        const current = [];
+        round.forEach((base, mi) => {
+          let a = base.a, b = base.b;
+          if (ri > 0) {
+            const left = derived[ri - 1]?.[mi * 2];
+            const right = derived[ri - 1]?.[mi * 2 + 1];
+            a = left?.winner || `${left?.id || `R${ri}-M${mi * 2 + 1}`} 승자`;
+            b = right?.winner || `${right?.id || `R${ri}-M${mi * 2 + 2}`} 승자`;
+          }
+
+          const rec = scoreRecord(d.divisionId, base.id, false) || { scoreA:'', scoreB:'' };
+          const scoreA = normalizeScoreValue(rec.scoreA);
+          const scoreB = normalizeScoreValue(rec.scoreB);
+          const playable = isPlayablePair(a, b);
+          const tie = playable && scoreA !== '' && scoreB !== '' && Number(scoreA) === Number(scoreB);
+          const winner = base.byeTeam || winnerFromScores(a, b, scoreA, scoreB);
+
+          current.push({
+            ...base, a, b, scoreA, scoreB, playable, tie, winner
+          });
+        });
+        derived.push(current);
+      });
+      return derived;
+    }
+
+    function derivedMatchFor(divisionId, matchId) {
+      const d = state.result?.divisions?.find(x => x.divisionId === divisionId);
+      if (!d) return null;
+      for (const round of deriveDivisionProgress(d)) {
+        const found = round.find(m => m.id === matchId);
+        if (found) return found;
+      }
+      return null;
+    }
+
+    function downstreamPath(d, roundIndex, matchIndex) {
+      const path = [];
+      let ri = roundIndex + 1;
+      let mi = Math.floor(matchIndex / 2);
+      while (ri < d.rounds.length) {
+        const m = d.rounds[ri]?.[mi];
+        if (!m) break;
+        path.push({ roundIndex: ri, matchIndex: mi, match: m });
+        mi = Math.floor(mi / 2);
+        ri++;
+      }
+      return path;
+    }
+
+    function downstreamHasScores(d, roundIndex, matchIndex) {
+      return downstreamPath(d, roundIndex, matchIndex).some(x => {
+        const rec = scoreRecord(d.divisionId, x.match.id, false);
+        return Boolean(rec && (normalizeScoreValue(rec.scoreA) !== '' || normalizeScoreValue(rec.scoreB) !== ''));
+      });
+    }
+
+    function clearDownstreamScores(d, roundIndex, matchIndex) {
+      downstreamPath(d, roundIndex, matchIndex).forEach(x => {
+        const rec = scoreRecord(d.divisionId, x.match.id, false);
+        if (rec) {
+          rec.scoreA = '';
+          rec.scoreB = '';
+        }
+      });
+    }
+
+    function updateMatchScore(divisionId, roundIndex, matchIndex, side, rawValue) {
+      const d = state.result?.divisions?.find(x => x.divisionId === divisionId);
+      const base = d?.rounds?.[roundIndex]?.[matchIndex];
+      if (!d || !base || base.byeTeam) return;
+
+      const progress = deriveDivisionProgress(d);
+      const before = progress[roundIndex]?.[matchIndex];
+      if (!before?.playable) return;
+
+      const rec = scoreRecord(divisionId, base.id, true);
+      const nextA = side === 'A' ? normalizeScoreValue(rawValue) : normalizeScoreValue(rec.scoreA);
+      const nextB = side === 'B' ? normalizeScoreValue(rawValue) : normalizeScoreValue(rec.scoreB);
+      const beforeWinner = before.winner || '';
+      const afterWinner = winnerFromScores(before.a, before.b, nextA, nextB);
+      const beforeTie = Boolean(before.tie);
+      const afterTie = nextA !== '' && nextB !== '' && Number(nextA) === Number(nextB);
+
+      if (beforeWinner !== afterWinner && downstreamHasScores(d, roundIndex, matchIndex)) {
+        const ok = confirm(
+          '이 경기의 승자가 변경되면 이후 라운드의 참가팀도 달라집니다.\n\n' +
+          '이미 입력된 이후 라운드 점수를 초기화하고 변경할까요?'
+        );
+        if (!ok) {
+          renderResults();
+          return;
+        }
+        clearDownstreamScores(d, roundIndex, matchIndex);
+      }
+
+      rec.scoreA = nextA;
+      rec.scoreB = nextB;
+      saveState();
+      archiveCurrentDraw();
+
+      const winnerChanged = beforeWinner !== afterWinner;
+      const tieChanged = beforeTie !== afterTie;
+      if (winnerChanged || tieChanged || afterTie) {
+        renderResults();
+        if (afterTie) toast('동점입니다. 승자를 결정할 수 있도록 점수를 확인해 주세요.');
+        else if (afterWinner) toast(`${afterWinner} 승리 · 다음 라운드에 자동 진출했습니다.`);
+      }
+    }
+
+    function bindScoreInputs() {
+      document.querySelectorAll('#screenResult .score-input').forEach(input => {
+        input.addEventListener('change', () => {
+          updateMatchScore(
+            input.dataset.divisionId,
+            Number(input.dataset.round),
+            Number(input.dataset.match),
+            input.dataset.side,
+            input.value
+          );
+        });
+      });
+    }
+
     function splitTeamDisplay(name) {
       const cleaned = String(name ?? '').trim();
       if (!cleaned || cleaned === '부전승') return { main: '부전승', sub: '' };
@@ -3100,29 +3316,44 @@
       return { main: cleaned, sub: '' };
     }
 
-    function matchCardHtml(m, roundIndex = 0, matchIndex = 0, divisionId = selectedDivisionId) {
-      const bye = Boolean(m.byeTeam);
-      const label = bye ? '부전승' : `${m.id}`;
-      const a = splitTeamDisplay(m.a);
-      const b = splitTeamDisplay(m.b);
-      const byeText = m.forcedBye ? '예외' : '';
+    function matchCardHtml(m, roundIndex = 0, matchIndex = 0, divisionId = selectedDivisionId, interactive = false) {
+      const dm = derivedMatchFor(divisionId, m.id) || m;
+      const bye = Boolean(dm.byeTeam);
+      const label = bye ? '부전승' : `${dm.id}`;
+      const a = splitTeamDisplay(dm.a);
+      const b = splitTeamDisplay(dm.b);
+      const byeText = dm.forcedBye ? '예외' : '';
       const scheduledTime = matchScheduledTime(divisionId, m);
+      const aWinner = Boolean(dm.winner && dm.winner === dm.a);
+      const bWinner = Boolean(dm.winner && dm.winner === dm.b);
+      const completed = Boolean(dm.winner && !bye);
+      const scoreCell = (side, score, isByeSide, isAdvanceSide) => {
+        if (bye) {
+          return `<div class="t-score ${isAdvanceSide ? (dm.forcedBye ? 'forced' : 'bye-tag') : 'muted'}">${escapeHtml(isAdvanceSide ? byeText : '')}</div>`;
+        }
+        if (!dm.playable) return `<div class="t-score muted"><span class="score-waiting">대기</span></div>`;
+        if (!interactive) return `<div class="t-score score-cell"><span class="score-value">${score === '' ? '' : escapeHtml(score)}</span></div>`;
+        return `<div class="t-score score-cell"><input class="score-input" type="number" min="0" max="999" step="1"
+          inputmode="numeric" value="${escapeHtml(score)}" aria-label="${escapeHtml(dm.id)} ${side === 'A' ? dm.a : dm.b} 점수"
+          data-division-id="${escapeHtml(divisionId)}" data-round="${roundIndex}" data-match="${matchIndex}" data-side="${side}" /></div>`;
+      };
+
       return `<div>
-        <div class="t-match-label">${escapeHtml(label)}${scheduledTime ? `<span class="match-time">${escapeHtml(scheduledTime)}</span>` : ''}</div>
+        <div class="t-match-label">${escapeHtml(label)}${scheduledTime ? `<span class="match-time">${escapeHtml(scheduledTime)}</span>` : ''}${dm.tie ? `<span class="score-warning">동점 확인</span>` : ''}</div>
         <article class="t-match ${bye ? 'bye-match' : ''}">
-          <div class="t-row ${a.main === '부전승' ? 'bye-row' : ''}">
+          <div class="t-row ${a.main === '부전승' ? 'bye-row' : ''} ${aWinner ? 'match-winner' : (completed && !aWinner ? 'match-loser' : '')}">
             <div class="t-team-main">
               <div class="t-team-name">${escapeHtml(a.main)}</div>
               ${a.sub ? `<div class="t-team-sub">${escapeHtml(a.sub)}</div>` : ''}
             </div>
-            <div class="t-score ${bye && m.a !== '부전승' ? (m.forcedBye ? 'forced' : 'bye-tag') : 'muted'}">${escapeHtml(bye && m.a !== '부전승' ? byeText : '')}</div>
+            ${scoreCell('A', dm.scoreA ?? '', a.main === '부전승', bye && dm.a !== '부전승')}
           </div>
-          <div class="t-row ${b.main === '부전승' ? 'bye-row' : ''}">
+          <div class="t-row ${b.main === '부전승' ? 'bye-row' : ''} ${bWinner ? 'match-winner' : (completed && !bWinner ? 'match-loser' : '')}">
             <div class="t-team-main">
               <div class="t-team-name">${escapeHtml(b.main)}</div>
               ${b.sub ? `<div class="t-team-sub">${escapeHtml(b.sub)}</div>` : ''}
             </div>
-            <div class="t-score ${bye && m.b !== '부전승' ? (m.forcedBye ? 'forced' : 'bye-tag') : 'muted'}">${escapeHtml(bye && m.b !== '부전승' ? byeText : '')}</div>
+            ${scoreCell('B', dm.scoreB ?? '', b.main === '부전승', bye && dm.b !== '부전승')}
           </div>
         </article>
       </div>`;
@@ -3168,8 +3399,15 @@
     function csvEscape(v) { const s = String(v ?? ''); return /[",\n]/.test(s) ? `"${s.replaceAll('"','""')}"` : s; }
     function exportCsv() {
       if (!state.result) return;
-      const rows = [['대회명', state.eventName], ['종목', state.sportName], ['프로그램 제작', CREATOR], ['추첨 식별번호', state.audit.drawId], ['추첨 시각', formatDateTime(state.audit.drawnAt)], ['공개번호', state.audit.publicNumber], ['명단 검증코드', state.audit.rosterHash], ['결과 검증코드', state.audit.resultHash], [], ['종별','라운드','경기번호','경기시간','팀A','팀B','구분']];
-      state.result.divisions.forEach(d => d.rounds.forEach((round, ri) => round.forEach(m => rows.push([d.divisionName, roundTitle(d.bracketSize, ri), m.id, matchScheduledTime(d.divisionId, m), m.a, m.b, m.byeTeam ? (m.forcedBye ? '예외 부전승' : '부전승') : '대진']))));
+      const rows = [['대회명', state.eventName], ['종목', state.sportName], ['프로그램 제작', CREATOR], ['추첨 식별번호', state.audit.drawId], ['추첨 시각', formatDateTime(state.audit.drawnAt)], ['공개번호', state.audit.publicNumber], ['명단 검증코드', state.audit.rosterHash], ['결과 검증코드', state.audit.resultHash], [], ['종별','라운드','경기번호','경기시간','팀A','점수A','팀B','점수B','승자','구분']];
+      state.result.divisions.forEach(d => {
+        const progress = deriveDivisionProgress(d);
+        progress.forEach((round, ri) => round.forEach(m => rows.push([
+          d.divisionName, roundTitle(d.bracketSize, ri), m.id, matchScheduledTime(d.divisionId, m),
+          m.a, m.scoreA, m.b, m.scoreB, m.winner,
+          m.byeTeam ? (m.forcedBye ? '예외 부전승' : '부전승') : (m.tie ? '동점 확인' : '경기')
+        ])));
+      });
       downloadBlob('\uFEFF' + rows.map(r => r.map(csvEscape).join(',')).join('\r\n'), `${safeFileName(state.eventName)}_대진표.csv`, 'text/csv;charset=utf-8');
     }
 
@@ -3207,6 +3445,7 @@
     }
 
     function buildBracketSheetXml(d) {
+      const progress = deriveDivisionProgress(d);
       const rows = new Map(), rowHeights = new Map(), merges = [];
       const add = (r,c,v,st=0) => { if(!rows.has(r)) rows.set(r,[]); rows.get(r).push({c,xml:excelCell(r,c,v,st)}); };
       const blank = (r,c,st=0) => add(r,c,'',st);
@@ -3246,19 +3485,23 @@
         const step=4*(2**ri), offset=(2**(ri+1))-2;
 
         round.forEach((m,mi)=>{
+          const dm=progress[ri]?.[mi] || m;
           const top=base+offset+mi*step, bottom=top+1;
           rowHeights.set(top,26); rowHeights.set(bottom,26);
-          const aBye=m.a==='부전승', bBye=m.b==='부전승';
-          const aAdv=Boolean(m.byeTeam)&&!aBye, bAdv=Boolean(m.byeTeam)&&!bBye;
-          const aStyle=aAdv?3:(aBye?5:2), bStyle=bAdv?3:(bBye?5:2);
+          const aBye=dm.a==='부전승', bBye=dm.b==='부전승';
+          const aAdv=Boolean(dm.byeTeam)&&!aBye, bAdv=Boolean(dm.byeTeam)&&!bBye;
+          const aWon=Boolean(dm.winner)&&dm.winner===dm.a, bWon=Boolean(dm.winner)&&dm.winner===dm.b;
+          const aStyle=(aAdv||aWon)?3:(aBye?5:2), bStyle=(bAdv||bWon)?3:(bBye?5:2);
 
           merge(top,sc,top,sc+1); merge(bottom,sc,bottom,sc+1);
-          add(top,sc,m.a,aStyle); blank(top,sc+1,aStyle);
-          add(bottom,sc,m.b,bStyle); blank(bottom,sc+1,bStyle);
-          const byeLabel=m.forcedBye?'예외 부전승':'부전승';
+          add(top,sc,dm.a,aStyle); blank(top,sc+1,aStyle);
+          add(bottom,sc,dm.b,bStyle); blank(bottom,sc+1,bStyle);
+          const byeLabel=dm.forcedBye?'예외 부전승':'부전승';
           const scheduledTime=matchScheduledTime(d.divisionId,m);
-          add(top,sc+2,aAdv?byeLabel:(scheduledTime?scheduledTime:''),aAdv?4:2);
-          add(bottom,sc+2,bAdv?byeLabel:'',bAdv?4:2);
+          const aStatus=aAdv?byeLabel:(dm.scoreA!==''?dm.scoreA:(scheduledTime?scheduledTime:''));
+          const bStatus=bAdv?byeLabel:(dm.scoreB!==''?dm.scoreB:'');
+          add(top,sc+2,aStatus,(aAdv||aWon)?4:2);
+          add(bottom,sc+2,bStatus,(bAdv||bWon)?4:2);
         });
 
         if(ri<d.rounds.length-1){
