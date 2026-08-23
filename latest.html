@@ -731,7 +731,7 @@
         <p>종별과 팀 수를 자유롭게 설정하고, 참가팀 명단과 공개 추첨번호로 공정하게 대진을 추첨합니다.</p>
         <div class="local-data-note">※ 모든 데이터는 현재 사용 중인 PC의 브라우저에만 저장되며 다른 사용자와 공유되지 않습니다.</div>
         <div class="maker-credit">제작 <strong>부산백양고 신태규</strong></div>
-        <div class="version-line"><span>현재 버전</span><span class="version-badge" id="currentVersionBadge">v1.4.20</span></div>
+        <div class="version-line"><span>현재 버전</span><span class="version-badge" id="currentVersionBadge">v1.4.21</span></div>
       </div>
       <div class="hero-tools no-print">
         <button class="btn btn-soft" id="fullscreenBtn">전체화면</button>
@@ -937,7 +937,7 @@
       <div class="modal-body">
         <div class="update-status" id="updateStatus">최신 버전 정보를 확인하려면 아래 버튼을 눌러 주세요.</div>
         <div class="update-version-grid">
-          <div class="k">현재 버전</div><div class="v" id="updateCurrentVersion">v1.4.20</div>
+          <div class="k">현재 버전</div><div class="v" id="updateCurrentVersion">v1.4.21</div>
           <div class="k">최신 버전</div><div class="v" id="updateLatestVersion">확인 전</div>
           <div class="k">마지막 업데이트</div><div class="v" id="updateReleasedAt">확인 전</div>
           <div class="k">제작</div><div class="v">부산백양고 신태규</div>
@@ -949,6 +949,7 @@
         <div class="update-notes" style="margin-top:10px">
           <strong>최근 업데이트 이력</strong>
           <ul>
+            <li><strong>v1.4.21</strong> · 새 대회 시작 시 기본 종별 1개, 참가팀 6팀으로 초기화</li>
             <li><strong>v1.4.20</strong> · 공개 추첨번호 도움말 표시 이벤트를 안정화하여 마우스 오버 시 확실히 노출되도록 수정</li>
             <li><strong>v1.4.19</strong> · 공개 추첨번호 도움말을 화면 기준 자동 위치 방식으로 변경하여 좌우 잘림 현상 해결</li>
             <li><strong>v1.4.18</strong> · 공개 추첨번호 도움말 툴팁이 화면 밖으로 잘리지 않도록 위치와 너비 조정</li>
@@ -1021,7 +1022,7 @@
     'use strict';
 
     const APP_VERSION = '4.0.0-SCHOOL';
-    const RELEASE_VERSION = '1.4.20';
+    const RELEASE_VERSION = '1.4.21';
     const UPDATE_API_URL = 'https://api.github.com/repos/taegyuab-code/school-sports-draw-updates/contents/latest.json?ref=main';
     const LATEST_HTML_API_URL = 'https://api.github.com/repos/taegyuab-code/school-sports-draw-updates/contents/latest.html?ref=main';
     const UPDATE_SCRIPT_URLS = [];
@@ -1031,8 +1032,7 @@
     const HISTORY_LIMIT = 30;
     const CREATOR = '부산백양고 신태규';
     const DEFAULT_DIVISIONS = [
-      { id: 'division_1', name: '남자부', count: 4 },
-      { id: 'division_2', name: '여자부', count: 4 }
+      { id: 'division_1', name: '남자부', count: 6 }
     ];
 
     const $ = id => document.getElementById(id);

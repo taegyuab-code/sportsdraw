@@ -1,10 +1,9 @@
 {
-  "version": "1.4.20",
-  "releasedAt": "2026-08-21",
+  "version": "1.4.21",
+  "releasedAt": "2026-08-23",
   "notes": [
-    "공개 추첨번호 도움말 표시 이벤트를 문서 위임 방식으로 변경해 렌더 시점과 무관하게 작동",
-    "마우스 오버와 키보드 포커스 시 툴팁이 확실히 보이도록 CSS 보조 표시 추가",
-    "화면 경계 자동 위치 계산 기능 유지"
+    "새 대회 시작 시 기본 종별을 1개로 변경",
+    "기본 참가팀 수를 6팀으로 변경"
   ],
   "downloadApiUrl": "https://api.github.com/repos/taegyuab-code/school-sports-draw-updates/contents/latest.html?ref=main",
   "downloadUrl": "https://raw.githubusercontent.com/taegyuab-code/school-sports-draw-updates/main/latest.html"
