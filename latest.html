@@ -619,6 +619,29 @@
     .confirm-check { margin-top: 13px; display: flex; gap: 8px; align-items: flex-start; font-size: 12px; font-weight: 800; line-height: 1.5; }
     .confirm-check input { width: auto; margin-top: 3px; accent-color: var(--primary); }
 
+    .feature-grid {
+      display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:9px;
+    }
+    .feature-card {
+      border:1px solid var(--line); border-radius:13px; background:#fbfcff;
+      padding:12px 13px; min-height:96px;
+    }
+    .feature-card h3 {
+      margin:0 0 6px; font-size:13px; color:#24345c; display:flex; align-items:center; gap:6px;
+    }
+    .feature-card p {
+      margin:0; color:#59657d; font-size:11px; line-height:1.62; font-weight:700;
+    }
+    .feature-summary {
+      margin-top:11px; padding:11px 13px; border-radius:12px;
+      background:#eef3ff; border:1px solid #cfdbfa; color:#324a86;
+      font-size:12px; line-height:1.6; font-weight:850; text-align:center;
+    }
+    @media (max-width:650px) {
+      .feature-grid { grid-template-columns:1fr; }
+      .feature-card { min-height:0; }
+    }
+
     .draw-stage { width: min(860px, 96vw); text-align: center; color: white; }
     .draw-stage .eyebrow { font-size: 15px; font-weight: 850; letter-spacing: .08em; opacity: .8; }
     .draw-stage .countdown { font-size: clamp(90px, 18vw, 180px); font-weight: 1000; line-height: 1; margin: 18px 0; }
@@ -766,11 +789,12 @@
         <p>종별과 팀 수를 자유롭게 설정하고, 참가팀 명단과 공개 추첨번호로 공정하게 대진을 추첨합니다.</p>
         <div class="local-data-note">※ 모든 데이터는 현재 사용 중인 PC의 브라우저에만 저장되며 다른 사용자와 공유되지 않습니다.</div>
         <div class="maker-credit">제작 <strong>부산백양고 신태규</strong></div>
-        <div class="version-line"><span>현재 버전</span><span class="version-badge" id="currentVersionBadge">v1.4.24</span></div>
+        <div class="version-line"><span>현재 버전</span><span class="version-badge" id="currentVersionBadge">v1.4.25</span></div>
       </div>
       <div class="hero-tools no-print">
         <button class="btn btn-soft" id="fullscreenBtn">전체화면</button>
         <button class="btn btn-soft" id="guideBtn">사용법</button>
+        <button class="btn btn-soft" id="featuresBtn">주요기능</button>
         <button class="btn btn-soft" id="historyBtn">지난 대진 보기</button>
         <button class="btn btn-soft" id="updateBtn">최신버전 확인</button>
         <button class="btn btn-soft" id="inquiryBtn">오류 및 문의사항</button>
@@ -940,6 +964,63 @@
     </div>
   </div>
 
+  <div class="modal hidden" id="featuresModal" role="dialog" aria-modal="true" aria-labelledby="featuresModalTitle">
+    <div class="modal-card" style="width:min(780px,96vw)">
+      <div class="modal-head">
+        <h2 id="featuresModalTitle">교내 학교스포츠클럽 대진 추첨 프로그램 주요 기능</h2>
+        <p>대진 추첨부터 경기 운영·결과 관리·엑셀 출력까지 한 번에 사용할 수 있습니다.</p>
+      </div>
+      <div class="modal-body">
+        <div class="feature-grid">
+          <div class="feature-card">
+            <h3>⚙️ 종별·참가팀 수 자유 설정</h3>
+            <p>남자부·여자부·학년별 등 원하는 종별을 만들고 참가팀 수에 맞춰 대진 규모와 부전승을 자동 계산합니다.</p>
+          </div>
+          <div class="feature-card">
+            <h3>👥 참가팀 명단 입력·잠금</h3>
+            <p>팀명 직접 입력, 엑셀 명단 붙여넣기, 부전승 제외팀 설정이 가능하며 추첨 전 명단을 확정·잠금할 수 있습니다.</p>
+          </div>
+          <div class="feature-card">
+            <h3>🔢 공개 추첨번호</h3>
+            <p>공개 추첨번호와 번호 출처·제시자를 기록하여 추첨 과정의 공정성과 재현성을 높일 수 있습니다.</p>
+          </div>
+          <div class="feature-card">
+            <h3>🏆 자동 토너먼트 대진 생성</h3>
+            <p>참가팀 수에 맞춰 단일 토너먼트와 부전승을 자동 배치하고 종별별 대진표를 생성합니다.</p>
+          </div>
+          <div class="feature-card">
+            <h3>⏱ 스마트 경기 타임테이블</h3>
+            <p>시작시간·경기시간·코트 수를 설정하고 여러 종별을 통합 또는 그룹별로 운영하며 경기시간과 코트를 자동 배정합니다.</p>
+          </div>
+          <div class="feature-card">
+            <h3>✍️ 경기 결과 관리</h3>
+            <p>대진표에서 점수를 입력하면 승리팀을 자동 판정하고 다음 라운드로 자동 진출시킵니다.</p>
+          </div>
+          <div class="feature-card">
+            <h3>📊 엑셀 대진표·운영표 저장</h3>
+            <p>종별 대진표와 운영표 시트를 자동 생성하고 경기번호를 부여하며 설정에 따라 경기시간·코트를 함께 표시합니다.</p>
+          </div>
+          <div class="feature-card">
+            <h3>📤 출력·결과 공유</h3>
+            <p>대진표 인쇄, CSV 저장, 엑셀 저장, 카카오톡용 결과 복사, 추첨 증명서 저장·검증을 지원합니다.</p>
+          </div>
+          <div class="feature-card">
+            <h3>🗂 지난 대진 기록 관리</h3>
+            <p>이전 대진을 브라우저에 보관하고 다시 열 수 있으며 기록 백업·복원과 기존 엑셀 대진표 복원을 지원합니다.</p>
+          </div>
+          <div class="feature-card">
+            <h3>💻 설치 없이 사용</h3>
+            <p>HTML 파일 하나를 크롬·엣지에서 바로 실행할 수 있으며 인터넷이 없어도 핵심 기능을 사용할 수 있습니다.</p>
+          </div>
+        </div>
+        <div class="feature-summary">학교스포츠클럽 및 교내 체육대회의 대진 추첨부터 경기 운영, 결과 관리, 엑셀 출력까지 한 번에 처리할 수 있도록 제작한 무료 프로그램입니다.</div>
+      </div>
+      <div class="modal-actions">
+        <button class="btn btn-primary" id="closeFeaturesBtn">확인</button>
+      </div>
+    </div>
+  </div>
+
   <div class="modal hidden" id="guideModal" role="dialog" aria-modal="true">
     <div class="modal-card" style="width:min(680px,96vw)">
       <div class="modal-head">
@@ -972,7 +1053,7 @@
       <div class="modal-body">
         <div class="update-status" id="updateStatus">최신 버전 정보를 확인하려면 아래 버튼을 눌러 주세요.</div>
         <div class="update-version-grid">
-          <div class="k">현재 버전</div><div class="v" id="updateCurrentVersion">v1.4.24</div>
+          <div class="k">현재 버전</div><div class="v" id="updateCurrentVersion">v1.4.25</div>
           <div class="k">최신 버전</div><div class="v" id="updateLatestVersion">확인 전</div>
           <div class="k">마지막 업데이트</div><div class="v" id="updateReleasedAt">확인 전</div>
           <div class="k">제작</div><div class="v">부산백양고 신태규</div>
@@ -984,6 +1065,7 @@
         <div class="update-notes" style="margin-top:10px">
           <strong>최근 업데이트 이력</strong>
           <ul>
+            <li><strong>v1.4.25</strong> · 홈 화면에 주요기능 버튼 및 프로그램 기능 안내 팝업 추가</li>
             <li><strong>v1.4.24</strong> · 경기시간·코트 표시 ON/OFF를 엑셀 저장에도 동일하게 적용</li>
             <li><strong>v1.4.23</strong> · 엑셀 저장 시 운영표 시트 자동 생성, 종별별 경기번호·경기시간·코트를 대진표에 표시</li>
             <li><strong>v1.4.22</strong> · 경기 점수 입력, 승자 자동 판정, 다음 라운드 자동 진출 및 이후 결과 안전 초기화 기능 추가</li>
@@ -1060,7 +1142,7 @@
     'use strict';
 
     const APP_VERSION = '4.0.0-SCHOOL';
-    const RELEASE_VERSION = '1.4.24';
+    const RELEASE_VERSION = '1.4.25';
     const UPDATE_API_URL = 'https://api.github.com/repos/taegyuab-code/school-sports-draw-updates/contents/latest.json?ref=main';
     const LATEST_HTML_API_URL = 'https://api.github.com/repos/taegyuab-code/school-sports-draw-updates/contents/latest.html?ref=main';
     const UPDATE_SCRIPT_URLS = [];
@@ -1723,6 +1805,9 @@
         alert(`엑셀 대진표를 복원하지 못했습니다.\n\n${err.message || err}\n\n※ 이 기능은 이 프로그램에서 저장한 대진표 XLSX 형식을 기준으로 복원합니다.`);
       }
     }
+
+    function openFeaturesModal() { $('featuresModal').classList.remove('hidden'); }
+    function closeFeaturesModal() { $('featuresModal').classList.add('hidden'); }
 
     function openGuideModal() { $('guideModal').classList.remove('hidden'); }
     function closeGuideModal() { $('guideModal').classList.add('hidden'); }
@@ -4204,6 +4289,7 @@
     $('xlsxBtn').addEventListener('click', exportXlsxBracket);
     $('resetBtn').addEventListener('click', resetAll);
     $('guideBtn').addEventListener('click', openGuideModal);
+    $('featuresBtn').addEventListener('click', openFeaturesModal);
     $('historyBtn').addEventListener('click', openHistoryModal);
     $('updateBtn').addEventListener('click', openUpdateModal);
     $('inquiryBtn').addEventListener('click', () => {
@@ -4215,6 +4301,8 @@
     $('updateModal').addEventListener('click', e => { if (e.target === $('updateModal')) closeUpdateModal(); });
     $('closeGuideBtn').addEventListener('click', closeGuideModal);
     $('guideModal').addEventListener('click', e => { if (e.target === $('guideModal')) closeGuideModal(); });
+    $('closeFeaturesBtn').addEventListener('click', closeFeaturesModal);
+    $('featuresModal').addEventListener('click', e => { if (e.target === $('featuresModal')) closeFeaturesModal(); });
     $('closeHistoryBtn').addEventListener('click', closeHistoryModal);
     $('backupHistoryBtn').addEventListener('click', backupHistory);
     $('restoreHistoryBtn').addEventListener('click', () => $('historyBackupFile').click());
@@ -4248,6 +4336,7 @@
     document.addEventListener('keydown', e => {
       if (e.key !== 'Escape') return;
       if (!$('divisionSetupModal').classList.contains('hidden')) closeDivisionSetup();
+      else if (!$('featuresModal').classList.contains('hidden')) closeFeaturesModal();
       else if (!$('guideModal').classList.contains('hidden')) closeGuideModal();
       else if (!$('historyModal').classList.contains('hidden')) closeHistoryModal();
       else if (!$('updateModal').classList.contains('hidden')) closeUpdateModal();

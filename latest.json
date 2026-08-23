@@ -1,12 +1,11 @@
 {
-  "version": "1.4.24",
+  "version": "1.4.25",
   "releasedAt": "2026-08-23",
   "notes": [
-    "대진표에 경기시간·코트 표시 설정을 엑셀 저장에도 동일하게 적용",
-    "표시 ON: 엑셀 대진표에 경기번호·시간·코트, 운영표에 시간·경기번호·학교·코트 표시",
-    "표시 OFF: 엑셀 대진표에는 경기번호만 표시하고 시간·코트 숨김",
-    "표시 OFF: 운영표는 경기번호·학교 2개 열만 생성",
-    "점수입력·자동진출 및 기존 엑셀 운영표 기능 유지"
+    "홈 화면 상단에 주요기능 버튼 추가",
+    "주요기능 버튼 클릭 시 프로그램 핵심 기능 10가지를 팝업으로 안내",
+    "대진 추첨·타임테이블·점수 자동진출·엑셀 운영표·기록관리·오프라인 사용 등 주요 기능 설명",
+    "기존 v1.4.24 기능 유지"
   ],
   "downloadApiUrl": "https://api.github.com/repos/taegyuab-code/school-sports-draw-updates/contents/latest.html?ref=main",
   "downloadUrl": "https://raw.githubusercontent.com/taegyuab-code/school-sports-draw-updates/main/latest.html"
