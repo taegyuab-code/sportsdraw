@@ -1,14 +1,12 @@
 {
-  "version": "1.4.22",
+  "version": "1.4.24",
   "releasedAt": "2026-08-23",
   "notes": [
-    "대진표 각 실제 경기에 점수 입력 기능 추가",
-    "두 팀 점수 입력 시 승자를 자동 판정하여 다음 라운드에 자동 진출",
-    "동점일 경우 자동 진출하지 않고 확인 안내 표시",
-    "이전 경기 승자 변경 시 이후 라운드에 입력된 점수가 있으면 경고 후 초기화",
-    "점수·진출 결과를 브라우저에 자동 저장하고 지난 대진 기록에도 반영",
-    "CSV 및 엑셀 저장 시 입력 점수와 진행 결과 반영",
-    "추첨 원본 결과와 검증코드는 별도로 유지하여 추첨 증명서 검증 기능 보존"
+    "대진표에 경기시간·코트 표시 설정을 엑셀 저장에도 동일하게 적용",
+    "표시 ON: 엑셀 대진표에 경기번호·시간·코트, 운영표에 시간·경기번호·학교·코트 표시",
+    "표시 OFF: 엑셀 대진표에는 경기번호만 표시하고 시간·코트 숨김",
+    "표시 OFF: 운영표는 경기번호·학교 2개 열만 생성",
+    "점수입력·자동진출 및 기존 엑셀 운영표 기능 유지"
   ],
   "downloadApiUrl": "https://api.github.com/repos/taegyuab-code/school-sports-draw-updates/contents/latest.html?ref=main",
   "downloadUrl": "https://raw.githubusercontent.com/taegyuab-code/school-sports-draw-updates/main/latest.html"

@@ -766,7 +766,7 @@
         <p>종별과 팀 수를 자유롭게 설정하고, 참가팀 명단과 공개 추첨번호로 공정하게 대진을 추첨합니다.</p>
         <div class="local-data-note">※ 모든 데이터는 현재 사용 중인 PC의 브라우저에만 저장되며 다른 사용자와 공유되지 않습니다.</div>
         <div class="maker-credit">제작 <strong>부산백양고 신태규</strong></div>
-        <div class="version-line"><span>현재 버전</span><span class="version-badge" id="currentVersionBadge">v1.4.22</span></div>
+        <div class="version-line"><span>현재 버전</span><span class="version-badge" id="currentVersionBadge">v1.4.24</span></div>
       </div>
       <div class="hero-tools no-print">
         <button class="btn btn-soft" id="fullscreenBtn">전체화면</button>
@@ -972,7 +972,7 @@
       <div class="modal-body">
         <div class="update-status" id="updateStatus">최신 버전 정보를 확인하려면 아래 버튼을 눌러 주세요.</div>
         <div class="update-version-grid">
-          <div class="k">현재 버전</div><div class="v" id="updateCurrentVersion">v1.4.22</div>
+          <div class="k">현재 버전</div><div class="v" id="updateCurrentVersion">v1.4.24</div>
           <div class="k">최신 버전</div><div class="v" id="updateLatestVersion">확인 전</div>
           <div class="k">마지막 업데이트</div><div class="v" id="updateReleasedAt">확인 전</div>
           <div class="k">제작</div><div class="v">부산백양고 신태규</div>
@@ -984,6 +984,8 @@
         <div class="update-notes" style="margin-top:10px">
           <strong>최근 업데이트 이력</strong>
           <ul>
+            <li><strong>v1.4.24</strong> · 경기시간·코트 표시 ON/OFF를 엑셀 저장에도 동일하게 적용</li>
+            <li><strong>v1.4.23</strong> · 엑셀 저장 시 운영표 시트 자동 생성, 종별별 경기번호·경기시간·코트를 대진표에 표시</li>
             <li><strong>v1.4.22</strong> · 경기 점수 입력, 승자 자동 판정, 다음 라운드 자동 진출 및 이후 결과 안전 초기화 기능 추가</li>
             <li><strong>v1.4.21</strong> · 새 대회 시작 시 기본 종별 1개, 참가팀 6팀으로 초기화</li>
             <li><strong>v1.4.20</strong> · 공개 추첨번호 도움말 표시 이벤트를 안정화하여 마우스 오버 시 확실히 노출되도록 수정</li>
@@ -1058,7 +1060,7 @@
     'use strict';
 
     const APP_VERSION = '4.0.0-SCHOOL';
-    const RELEASE_VERSION = '1.4.22';
+    const RELEASE_VERSION = '1.4.24';
     const UPDATE_API_URL = 'https://api.github.com/repos/taegyuab-code/school-sports-draw-updates/contents/latest.json?ref=main';
     const LATEST_HTML_API_URL = 'https://api.github.com/repos/taegyuab-code/school-sports-draw-updates/contents/latest.html?ref=main';
     const UPDATE_SCRIPT_URLS = [];
@@ -2664,7 +2666,7 @@
         <div id="schedulePanelBody" class="${schedule.panelCollapsed ? 'hidden' : ''}">
         <div class="schedule-mode-row">
           <label><input type="checkbox" id="scheduleShowDetails" ${schedule.showDetails === true ? 'checked' : ''}> 대진표에 경기시간 · 코트 표시</label>
-          <span class="schedule-note" style="padding:0;align-self:center">체크 해제 시 설정값은 유지되며 아래 설정 영역은 회색으로 잠기고, 대진표·인쇄·CSV·엑셀에서는 경기시간·코트 표시가 숨겨집니다.</span>
+          <span class="schedule-note" style="padding:0;align-self:center">체크 해제 시 설정값은 유지되며 아래 설정 영역은 회색으로 잠기고, 화면 대진표·인쇄·CSV·엑셀에서도 경기시간·코트 표시가 숨겨집니다. 경기번호는 엑셀 대진표와 운영표에 유지됩니다.</span>
         </div>
         <div id="scheduleSettingsArea" class="${schedule.showDetails === false ? 'schedule-settings-locked' : ''}" aria-disabled="${schedule.showDetails === false ? 'true' : 'false'}">
           <div class="schedule-mode-row">
@@ -3411,11 +3413,182 @@
       downloadBlob('\uFEFF' + rows.map(r => r.map(csvEscape).join(',')).join('\r\n'), `${safeFileName(state.eventName)}_대진표.csv`, 'text/csv;charset=utf-8');
     }
 
+    function xlsxSafeSheetName(raw, used = new Set()) {
+      let base = cleanText(raw || 'Sheet').replace(/[\\\/:*?\[\]]/g, ' ').replace(/\s+/g, ' ').trim() || 'Sheet';
+      base = base.slice(0, 31);
+      let name = base, n = 2;
+      while (used.has(name)) {
+        const suffix = ` (${n++})`;
+        name = base.slice(0, Math.max(1, 31 - suffix.length)) + suffix;
+      }
+      used.add(name);
+      return name;
+    }
+
+    function excelMatchNumberMap(bundle = timetableBundle()) {
+      const map = new Map();
+      const byDivision = new Map();
+      [...bundle.map.values()].forEach(info => {
+        if (!byDivision.has(info.divisionId)) byDivision.set(info.divisionId, []);
+        byDivision.get(info.divisionId).push(info);
+      });
+      byDivision.forEach(infos => {
+        infos.sort((a,b) =>
+          a.startMinute - b.startMinute ||
+          a.court - b.court ||
+          a.roundIndex - b.roundIndex ||
+          (a.match?.matchNo || 0) - (b.match?.matchNo || 0)
+        );
+        infos.forEach((info, i) => {
+          map.set(info.key, {
+            number: i + 1,
+            label: `${info.divisionName}-${i + 1}`,
+            info
+          });
+        });
+      });
+      return map;
+    }
+
+    function excelMatchScheduleLabel(divisionId, match, numberMap = excelMatchNumberMap()) {
+      if (!match || match.byeTeam) return '';
+      const key = `${divisionId}|${match.id}`;
+      const numbered = numberMap.get(key);
+      const info = numbered?.info || matchScheduledInfo(divisionId, match);
+      const label = numbered?.label || info?.divisionName || '';
+      if (!label) return '';
+      const showDetails = normalizeSchedule().showDetails === true;
+      if (!showDetails || !info) return `[${label}]`;
+      return `[${label} · ${info.time}~${info.endTime} · ${info.court}코트]`;
+    }
+
+    function operationTeamLabel(name) {
+      const s = cleanText(name);
+      const m = s.match(/^(R\d+-M\d+)\s*승자$/);
+      return m ? `승자(${m[1]})` : s;
+    }
+
+    function operationSheetDefinitions(bundle, numberMap) {
+      const groups = bundle.groups || [];
+      if (!groups.length) return [];
+      const multiple = groups.length > 1;
+
+      return groups.map((g, gi) => {
+        let name = '운영표';
+        if (multiple) {
+          if ((g.divisions || []).length === 1) name = `${g.divisions[0].divisionName} 운영표`;
+          else name = `${groupLabel(g.groupId)} 운영표`;
+        }
+        return { name, xml: buildOperationSheetXml(g, numberMap, gi) };
+      });
+    }
+
+    function buildOperationSheetXml(groupBundle, numberMap, groupIndex = 0) {
+      const showDetails = normalizeSchedule().showDetails === true;
+      const infos = [...groupBundle.map.values()].sort((a,b) =>
+        a.startMinute - b.startMinute ||
+        a.court - b.court ||
+        a.divisionName.localeCompare(b.divisionName, 'ko') ||
+        a.roundIndex - b.roundIndex ||
+        (a.match?.matchNo || 0) - (b.match?.matchNo || 0)
+      );
+
+      const rows = new Map(), rowHeights = new Map(), merges = [];
+      const add = (r,c,v,st=0) => { if(!rows.has(r)) rows.set(r,[]); rows.get(r).push({c,xml:excelCell(r,c,v,st)}); };
+      const merge = (r1,c1,r2,c2) => merges.push(`${excelCol(c1)}${r1}:${excelCol(c2)}${r2}`);
+
+      // 시간·코트 표시 ON: 시간 / 경기번호 / 학교 / 코트
+      // 시간·코트 표시 OFF: 경기번호 / 학교
+      if (showDetails) {
+        add(1,1,'시간',11); add(1,2,'경기번호',11); add(1,3,'학교',11); add(1,4,'코트',11);
+      } else {
+        add(1,1,'경기번호',11); add(1,2,'학교',11);
+      }
+      rowHeights.set(1,28);
+
+      const divisionIndex = new Map(state.result.divisions.map((d,i)=>[d.divisionId,i]));
+      const dataStart = 2;
+
+      infos.forEach((info, i) => {
+        const r = dataStart + i;
+        const numbered = numberMap.get(info.key);
+        const dm = derivedMatchFor(info.divisionId, info.match.id) || info.match;
+        const teamText = `${operationTeamLabel(dm.a)} vs ${operationTeamLabel(dm.b)}`;
+        const colorStyle = 14 + ((divisionIndex.get(info.divisionId) || 0) % 8);
+        const matchLabel = numbered?.label || `${info.divisionName}-${i+1}`;
+
+        if (showDetails) {
+          add(r,1,`${info.time}~${info.endTime}`,12);
+          add(r,2,matchLabel,colorStyle);
+          add(r,3,teamText,12);
+          add(r,4,String(info.court),12);
+        } else {
+          add(r,1,matchLabel,colorStyle);
+          add(r,2,teamText,12);
+        }
+        rowHeights.set(r,23);
+      });
+
+      // 시간 표시 ON일 때만 같은 시간대 시간 셀을 병합
+      if (showDetails) {
+        let start = 0;
+        while (start < infos.length) {
+          let end = start;
+          const key = `${infos[start].startMinute}|${infos[start].endMinute}`;
+          while (end + 1 < infos.length && `${infos[end+1].startMinute}|${infos[end+1].endMinute}` === key) end++;
+          if (end > start) merge(dataStart + start, 1, dataStart + end, 1);
+          start = end + 1;
+        }
+      }
+
+      const lastRow = Math.max(1, dataStart + infos.length - 1);
+      const lastCol = showDetails ? 'D' : 'B';
+      const rowXml=[...rows.keys()].sort((a,b)=>a-b).map(r=>{
+        const h=rowHeights.get(r), cs=rows.get(r).sort((a,b)=>a.c-b.c).map(x=>x.xml).join('');
+        return `<row r="${r}"${h?` ht="${h}" customHeight="1"`:''}>${cs}</row>`;
+      }).join('');
+
+      const cols = showDetails
+        ? `<cols>
+            <col min="1" max="1" width="18" customWidth="1"/>
+            <col min="2" max="2" width="16" customWidth="1"/>
+            <col min="3" max="3" width="45" customWidth="1"/>
+            <col min="4" max="4" width="9" customWidth="1"/>
+          </cols>`
+        : `<cols>
+            <col min="1" max="1" width="18" customWidth="1"/>
+            <col min="2" max="2" width="52" customWidth="1"/>
+          </cols>`;
+
+      return `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+      <worksheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main">
+        <dimension ref="A1:${lastCol}${lastRow}"/>
+        <sheetViews><sheetView workbookViewId="0" showGridLines="0"><pane ySplit="1" topLeftCell="A2" activePane="bottomLeft" state="frozen"/></sheetView></sheetViews>
+        <sheetFormatPr defaultRowHeight="18"/>
+        ${cols}
+        <sheetData>${rowXml}</sheetData>
+        ${merges.length?`<mergeCells count="${merges.length}">${merges.map(m=>`<mergeCell ref="${m}"/>`).join('')}</mergeCells>`:''}
+        <pageMargins left="0.3" right="0.3" top="0.4" bottom="0.4" header="0.2" footer="0.2"/>
+        <pageSetup orientation="portrait" fitToWidth="1" fitToHeight="0" paperSize="9"/>
+      </worksheet>`;
+    }
+
     // 추첨 결과를 실제 .xlsx 대진표로 저장합니다. (외부 라이브러리 불필요)
     function exportXlsxBracket() {
       if (!state.result) return;
       try {
-        const sheets = state.result.divisions.map(d => ({ name: d.divisionName, xml: buildBracketSheetXml(d) }));
+        const bundle = timetableBundle();
+        const numberMap = excelMatchNumberMap(bundle);
+        const usedSheetNames = new Set();
+        const divisionSheets = state.result.divisions.map(d => ({
+          name: xlsxSafeSheetName(d.divisionName, usedSheetNames),
+          xml: buildBracketSheetXml(d, numberMap)
+        }));
+        const operationSheets = operationSheetDefinitions(bundle, numberMap).map(sh => ({
+          name: xlsxSafeSheetName(sh.name, usedSheetNames),
+          xml: sh.xml
+        }));
+        const sheets = [...divisionSheets, ...operationSheets];
         const bytes = makeZip(buildXlsxPackage(sheets));
         const blob = new Blob([bytes], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
         const url = URL.createObjectURL(blob);
@@ -3424,7 +3597,7 @@
         a.download = `${safeFileName(state.eventName)}${state.sportName ? '_' + safeFileName(state.sportName) : ''}_대진표.xlsx`;
         document.body.appendChild(a); a.click(); a.remove();
         setTimeout(() => URL.revokeObjectURL(url), 1000);
-        toast('윤곽선·연결선이 적용된 엑셀 대진표를 저장했습니다.');
+        toast(`운영표 ${operationSheets.length}개와 경기번호가 포함된 엑셀 대진표를 저장했습니다.${normalizeSchedule().showDetails === true ? ' 경기시간·코트도 함께 표시됩니다.' : ''}`);
       } catch (err) {
         console.error(err);
         alert('엑셀 파일 생성 중 오류가 발생했습니다.');
@@ -3444,7 +3617,7 @@
       return `<c r="${ref}" t="inlineStr" s="${style}"><is><t xml:space="preserve">${xmlEscape(value ?? '')}</t></is></c>`;
     }
 
-    function buildBracketSheetXml(d) {
+    function buildBracketSheetXml(d, numberMap = excelMatchNumberMap()) {
       const progress = deriveDivisionProgress(d);
       const rows = new Map(), rowHeights = new Map(), merges = [];
       const add = (r,c,v,st=0) => { if(!rows.has(r)) rows.set(r,[]); rows.get(r).push({c,xml:excelCell(r,c,v,st)}); };
@@ -3487,6 +3660,15 @@
         round.forEach((m,mi)=>{
           const dm=progress[ri]?.[mi] || m;
           const top=base+offset+mi*step, bottom=top+1;
+          if (!m.byeTeam) {
+            const labelRow = Math.max(5, top - 1);
+            const matchLabel = excelMatchScheduleLabel(d.divisionId, m, numberMap);
+            if (matchLabel) {
+              merge(labelRow,sc,labelRow,sc+2);
+              add(labelRow,sc,matchLabel,13);
+              rowHeights.set(labelRow,18);
+            }
+          }
           rowHeights.set(top,26); rowHeights.set(bottom,26);
           const aBye=dm.a==='부전승', bBye=dm.b==='부전승';
           const aAdv=Boolean(dm.byeTeam)&&!aBye, bAdv=Boolean(dm.byeTeam)&&!bBye;
@@ -3497,8 +3679,7 @@
           add(top,sc,dm.a,aStyle); blank(top,sc+1,aStyle);
           add(bottom,sc,dm.b,bStyle); blank(bottom,sc+1,bStyle);
           const byeLabel=dm.forcedBye?'예외 부전승':'부전승';
-          const scheduledTime=matchScheduledTime(d.divisionId,m);
-          const aStatus=aAdv?byeLabel:(dm.scoreA!==''?dm.scoreA:(scheduledTime?scheduledTime:''));
+          const aStatus=aAdv?byeLabel:(dm.scoreA!==''?dm.scoreA:'');
           const bStatus=bAdv?byeLabel:(dm.scoreB!==''?dm.scoreB:'');
           add(top,sc+2,aStatus,(aAdv||aWon)?4:2);
           add(bottom,sc+2,bStatus,(bAdv||bWon)?4:2);
@@ -3557,18 +3738,29 @@
       const workbook=`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><workbook xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"><sheets>${sheets.map((sh,i)=>`<sheet name="${xmlEscape(sh.name)}" sheetId="${i+1}" r:id="rId${i+1}"/>`).join('')}</sheets></workbook>`;
       const wbRels=`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">${sheets.map((_,i)=>`<Relationship Id="rId${i+1}" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet" Target="worksheets/sheet${i+1}.xml"/>`).join('')}<Relationship Id="rId${sheets.length+1}" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles" Target="styles.xml"/></Relationships>`;
       const styles=`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><styleSheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main">
-        <fonts count="3">
+        <fonts count="5">
           <font><sz val="10"/><name val="맑은 고딕"/></font>
           <font><b/><color rgb="FFFFFFFF"/><sz val="12"/><name val="맑은 고딕"/></font>
           <font><b/><sz val="10"/><name val="맑은 고딕"/></font>
+          <font><b/><sz val="12"/><name val="맑은 고딕"/></font>
+          <font><b/><color rgb="FFE64A19"/><sz val="9"/><name val="맑은 고딕"/></font>
         </fonts>
-        <fills count="6">
+        <fills count="15">
           <fill><patternFill patternType="none"/></fill>
           <fill><patternFill patternType="gray125"/></fill>
           <fill><patternFill patternType="solid"><fgColor rgb="FF4748D5"/></patternFill></fill>
           <fill><patternFill patternType="solid"><fgColor rgb="FFE9EDF3"/></patternFill></fill>
           <fill><patternFill patternType="solid"><fgColor rgb="FFE9F8F2"/></patternFill></fill>
           <fill><patternFill patternType="solid"><fgColor rgb="FFFFF7E5"/></patternFill></fill>
+          <fill><patternFill patternType="solid"><fgColor rgb="FFB4C6E7"/></patternFill></fill>
+          <fill><patternFill patternType="solid"><fgColor rgb="FFF8CBAD"/></patternFill></fill>
+          <fill><patternFill patternType="solid"><fgColor rgb="FFC6E0B4"/></patternFill></fill>
+          <fill><patternFill patternType="solid"><fgColor rgb="FFE4B7E5"/></patternFill></fill>
+          <fill><patternFill patternType="solid"><fgColor rgb="FFB7DEE8"/></patternFill></fill>
+          <fill><patternFill patternType="solid"><fgColor rgb="FFFFF2CC"/></patternFill></fill>
+          <fill><patternFill patternType="solid"><fgColor rgb="FFD9EAD3"/></patternFill></fill>
+          <fill><patternFill patternType="solid"><fgColor rgb="FFD9D2E9"/></patternFill></fill>
+          <fill><patternFill patternType="solid"><fgColor rgb="FFFCE5CD"/></patternFill></fill>
         </fills>
         <borders count="6">
           <border/>
@@ -3579,7 +3771,7 @@
           <border><left style="thin"><color rgb="FFD1D6DE"/></left><right style="thin"><color rgb="FFD1D6DE"/></right><top style="thin"><color rgb="FFD1D6DE"/></top><bottom style="thin"><color rgb="FFD1D6DE"/></bottom></border>
         </borders>
         <cellStyleXfs count="1"><xf numFmtId="0" fontId="0" fillId="0" borderId="0"/></cellStyleXfs>
-        <cellXfs count="11">
+        <cellXfs count="22">
           <xf numFmtId="0" fontId="0" fillId="0" borderId="0" xfId="0"/>
           <xf numFmtId="0" fontId="1" fillId="2" borderId="1" xfId="0" applyAlignment="1"><alignment horizontal="center" vertical="center" wrapText="1"/></xf>
           <xf numFmtId="0" fontId="2" fillId="3" borderId="1" xfId="0" applyAlignment="1"><alignment horizontal="center" vertical="center" wrapText="1"/></xf>
@@ -3591,6 +3783,17 @@
           <xf numFmtId="0" fontId="0" fillId="0" borderId="2" xfId="0"/>
           <xf numFmtId="0" fontId="0" fillId="0" borderId="3" xfId="0"/>
           <xf numFmtId="0" fontId="0" fillId="0" borderId="4" xfId="0"/>
+          <xf numFmtId="0" fontId="3" fillId="6" borderId="1" xfId="0" applyAlignment="1"><alignment horizontal="center" vertical="center" wrapText="1"/></xf>
+          <xf numFmtId="0" fontId="0" fillId="0" borderId="1" xfId="0" applyAlignment="1"><alignment horizontal="center" vertical="center" wrapText="1"/></xf>
+          <xf numFmtId="0" fontId="4" fillId="0" borderId="0" xfId="0" applyAlignment="1"><alignment horizontal="left" vertical="center" wrapText="1"/></xf>
+          <xf numFmtId="0" fontId="2" fillId="7" borderId="1" xfId="0" applyAlignment="1"><alignment horizontal="center" vertical="center" wrapText="1"/></xf>
+          <xf numFmtId="0" fontId="2" fillId="8" borderId="1" xfId="0" applyAlignment="1"><alignment horizontal="center" vertical="center" wrapText="1"/></xf>
+          <xf numFmtId="0" fontId="2" fillId="9" borderId="1" xfId="0" applyAlignment="1"><alignment horizontal="center" vertical="center" wrapText="1"/></xf>
+          <xf numFmtId="0" fontId="2" fillId="10" borderId="1" xfId="0" applyAlignment="1"><alignment horizontal="center" vertical="center" wrapText="1"/></xf>
+          <xf numFmtId="0" fontId="2" fillId="11" borderId="1" xfId="0" applyAlignment="1"><alignment horizontal="center" vertical="center" wrapText="1"/></xf>
+          <xf numFmtId="0" fontId="2" fillId="12" borderId="1" xfId="0" applyAlignment="1"><alignment horizontal="center" vertical="center" wrapText="1"/></xf>
+          <xf numFmtId="0" fontId="2" fillId="13" borderId="1" xfId="0" applyAlignment="1"><alignment horizontal="center" vertical="center" wrapText="1"/></xf>
+          <xf numFmtId="0" fontId="2" fillId="14" borderId="1" xfId="0" applyAlignment="1"><alignment horizontal="center" vertical="center" wrapText="1"/></xf>
         </cellXfs>
         <cellStyles count="1"><cellStyle name="Normal" xfId="0" builtinId="0"/></cellStyles>
       </styleSheet>`;
