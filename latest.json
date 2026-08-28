@@ -1,9 +1,13 @@
 {
-  "version": "1.4.26",
-  "releasedAt": "2026-08-24",
+  "version": "1.5.11",
+  "releasedAt": "2026-08-28",
   "notes": [
-    "모바일 화면 최하단에 노출되던 불필요한 \\\\n\\\\n 문자 제거",
-    "v1.4.25의 주요기능 안내 및 기존 기능은 그대로 유지"
+    "더블리그 경기카드의 팀 A에 홈, 팀 B에 원정 배지 표시",
+    "2회차에는 팀 A/B가 반대로 생성되므로 홈/원정 배지도 자동으로 반전",
+    "단일리그에는 홈/원정 배지를 표시하지 않음",
+    "리그방식 ? 도움말에 더블리그 홈/어웨이 방식 설명 추가",
+    "리그전 결과 안내에도 더블리그 홈/어웨이 운영 설명 추가",
+    "v1.5.10 및 리그전 엑셀 오류 수정 기능 유지"
   ],
   "downloadApiUrl": "https://api.github.com/repos/taegyuab-code/school-sports-draw-updates/contents/latest.html?ref=main",
   "downloadUrl": "https://raw.githubusercontent.com/taegyuab-code/school-sports-draw-updates/main/latest.html"

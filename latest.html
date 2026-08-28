@@ -108,8 +108,8 @@
     }
     .division-card:hover { border-color: #afbee9; }
     .division-card.active { border-color: var(--primary); background: var(--soft); box-shadow: inset 0 0 0 1px var(--primary); }
-    .division-card .name { font-weight: 900; font-size: 15px; }
-    .division-card .meta { color: var(--muted); font-size: 11px; margin-top: 4px; }
+    .division-card .name { font-weight: 900; font-size: 15px; display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
+    .division-card .meta { color: var(--muted); font-size: 12px; margin-top: 6px; line-height: 1.45; font-weight: 700; word-break: keep-all; }
     .division-card .check { position: absolute; right: 9px; top: 9px; color: var(--success); font-weight: 900; }
 
     .division-setup-box {
@@ -119,19 +119,29 @@
     .division-setup-box strong { display: block; font-size: 13px; }
     .division-setup-box span { display: block; margin-top: 4px; color: var(--muted); font-size: 10px; line-height: 1.45; }
     .setup-list { display: grid; gap: 8px; }
+    #divisionSetupModal .modal-card { width:min(1080px,96vw); }
     .setup-row {
-      display: grid; grid-template-columns: minmax(0, 1fr) 100px 66px; gap: 8px; align-items: end;
+      display: grid; grid-template-columns: minmax(0, 1fr) 145px 90px 66px; gap: 8px; align-items: end;
       padding: 10px; border: 1px solid var(--line); border-radius: 12px; background: #fbfcff;
+    }
+    .setup-row.league-row {
+      grid-template-columns: minmax(150px,1fr) 120px 125px minmax(215px,1.25fr) 78px 66px;
     }
     .setup-row .field { margin: 0; }
     .setup-row .btn { height: 40px; }
     .setup-help { margin-bottom: 12px; padding: 10px 11px; border-radius: 11px; background: #f0f4ff; border: 1px solid #cad6fb; color: #3150a8; font-size: 11px; line-height: 1.55; }
     .setup-footer { display: flex; justify-content: space-between; align-items: center; gap: 8px; flex-wrap: wrap; margin-top: 12px; }
     .setup-total { color: var(--muted); font-size: 11px; font-weight: 800; }
+    @media (max-width: 900px) {
+      .setup-row, .setup-row.league-row { grid-template-columns: minmax(0,1fr) minmax(0,1fr); }
+      .setup-row .setup-delete { grid-column:1 / -1; }
+    }
     @media (max-width: 650px) {
       .division-setup-box { align-items: stretch; flex-direction: column; }
-      .setup-row { grid-template-columns: minmax(0,1fr) 86px; }
-      .setup-row .setup-delete { grid-column: 1 / -1; }
+    }
+    @media (max-width: 520px) {
+      .setup-row, .setup-row.league-row { grid-template-columns:1fr; }
+      .setup-row .setup-delete { grid-column:auto; }
     }
 
     .lock-box { margin-top: 14px; padding: 12px; border-radius: 13px; border: 1px solid #cfd9f2; background: #f5f8ff; }
@@ -420,6 +430,57 @@
     .match-vs { text-align: center; color: var(--muted); font-size: 10px; font-weight: 900; }
     .match-card.bye-match { background: #fbfdfc; border-color: #c7e3d7; }
     .match-card.bye-match .match-team:first-of-type { background: var(--success-soft); color: var(--success); }
+
+    .format-badge {
+      display:inline-flex; align-items:center; justify-content:center; margin-left:6px; padding:2px 7px; border-radius:999px;
+      border:1px solid #cbd6ed; background:#f5f8ff; color:#4a5d86; font-size:9px; font-weight:900; line-height:1.25; vertical-align:middle; white-space:nowrap;
+    }
+    .format-badge.league { background:#eef9f3; border-color:#b9dec9; color:#176242; }
+    .league-team-head, .league-team-row { grid-template-columns: 44px minmax(0,1fr) !important; }
+    .league-result { background:#f7f9fc; }
+    .league-score-guide {
+      margin:0 0 12px; padding:10px 12px; border:1px solid #bfdccb; border-radius:11px;
+      background:#eef9f3; color:#176242; font-size:11px; font-weight:800; line-height:1.55;
+    }
+    .league-standings-wrap { overflow-x:auto; margin:10px 0 15px; }
+    .league-standings { width:100%; min-width:680px; border-collapse:collapse; background:white; font-size:11px; }
+    .league-standings th, .league-standings td { border:1px solid #d8deea; padding:8px 7px; text-align:center; }
+    .league-standings th { background:#edf2fb; color:#34425e; font-weight:950; }
+    .league-standings td.team { text-align:left; font-weight:900; }
+    .league-standings tr.rank-1 td { background:#fff9df; }
+    .league-rank { display:inline-flex; width:24px; height:24px; align-items:center; justify-content:center; border-radius:50%; background:#eef2f8; font-weight:950; }
+    .league-rounds { display:grid; gap:13px; }
+    .league-round-block { border:1px solid #d8dfec; border-radius:14px; background:#fff; padding:11px; }
+    .league-round-head { display:flex; justify-content:space-between; align-items:center; gap:10px; margin-bottom:9px; }
+    .league-round-head h3 { margin:0; font-size:14px; }
+    .league-rest { color:#6c768b; font-size:10px; font-weight:800; }
+    .league-match-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:8px; }
+    .league-match-card { border:1px solid #cfd7e5; border-radius:12px; overflow:hidden; background:#fbfcff; }
+    .league-match-meta { display:flex; justify-content:space-between; gap:8px; padding:7px 9px; background:#f0f4fa; color:#5b667b; font-size:9px; font-weight:900; }
+    .league-match-body { display:grid; grid-template-columns:minmax(0,1fr) 52px 24px 52px minmax(0,1fr); align-items:center; gap:5px; padding:10px; }
+    .league-team { min-width:0; text-align:center; font-size:12px; font-weight:900; word-break:keep-all; display:flex; align-items:center; justify-content:center; gap:5px; flex-wrap:wrap; }
+    .league-team-name { min-width:0; }
+    .league-venue-badge {
+      display:inline-flex; align-items:center; justify-content:center;
+      min-width:28px; padding:2px 6px; border-radius:999px;
+      font-size:9px; font-weight:950; line-height:1.25; white-space:nowrap;
+      border:1px solid transparent;
+    }
+    .league-venue-badge.home { background:#eef3ff; color:#2954bd; border-color:#c9d8ff; }
+    .league-venue-badge.away { background:#fff3ea; color:#b45b18; border-color:#f2d2ba; }
+    .league-vs { text-align:center; color:#7b8497; font-size:9px; font-weight:950; }
+    .league-score-input { width:46px; height:36px; padding:3px; border:1px solid #adb8ca; border-radius:7px; background:white; text-align:center; font-size:15px; font-weight:950; }
+    .league-score-input::-webkit-inner-spin-button, .league-score-input::-webkit-outer-spin-button { -webkit-appearance:none; margin:0; }
+    .league-score-input { appearance:textfield; -moz-appearance:textfield; }
+    .league-match-result { grid-column:1/-1; margin-top:5px; text-align:center; color:#59657b; font-size:9px; font-weight:850; }
+    .league-basic-rule { margin-top:7px; color:#69758c; font-size:10px; line-height:1.5; }
+    .league-phase-notice { margin:0 0 13px; padding:10px 12px; border:1px solid #ead9a6; border-radius:11px; background:#fff9e9; color:#80601a; font-size:11px; font-weight:800; line-height:1.55; }
+    @media (max-width:700px) {
+      .league-match-grid { grid-template-columns:1fr; }
+      .league-match-body { grid-template-columns:minmax(0,1fr) 46px 20px 46px minmax(0,1fr); padding:8px; }
+      .league-team { font-size:11px; gap:4px; }
+      .league-venue-badge { min-width:25px; padding:2px 5px; font-size:8px; }
+    }
 
     .audit {
       margin-top: 15px; border: 1px solid var(--line); border-radius: 13px; padding: 12px; background: #fbfcff;
@@ -772,6 +833,15 @@
       .score-input { width:100%; height:auto; min-height:0; padding:0; border:0; border-radius:0; background:transparent; font-size:var(--print-score-font, 7px); font-weight:950; }
       .score-guide { display:none; }
       .champion-banner { padding:4px 6px; margin:3px 0; font-size:8px; }
+      .league-score-guide, .league-basic-rule { display:none; }
+      .league-standings { min-width:0; font-size:8px; }
+      .league-standings th, .league-standings td { padding:3px 4px; }
+      .league-round-block { break-inside:avoid; padding:6px; margin-bottom:5px; }
+      .league-match-grid { grid-template-columns:repeat(2,minmax(0,1fr)); gap:4px; }
+      .league-match-meta { padding:3px 5px; font-size:6px; }
+      .league-match-body { padding:5px; grid-template-columns:minmax(0,1fr) 32px 14px 32px minmax(0,1fr); }
+      .league-score-input { width:28px; height:22px; font-size:8px; padding:0; }
+      .league-team { font-size:8px; }
       .t-legend { display: none; }
       .bracket-connector-line { stroke-width: 1; }
       .print-meta { display: block; margin-top: 3px; text-align: right; font-size: 6px; color: #666; }
@@ -789,7 +859,7 @@
         <p>종별과 팀 수를 자유롭게 설정하고, 참가팀 명단과 공개 추첨번호로 공정하게 대진을 추첨합니다.</p>
         <div class="local-data-note">※ 모든 데이터는 현재 사용 중인 PC의 브라우저에만 저장되며 다른 사용자와 공유되지 않습니다.</div>
         <div class="maker-credit">제작 <strong>부산백양고 신태규</strong></div>
-        <div class="version-line"><span>현재 버전</span><span class="version-badge" id="currentVersionBadge">v1.4.26</span></div>
+        <div class="version-line"><span>현재 버전</span><span class="version-badge" id="currentVersionBadge">v1.5.11</span></div>
       </div>
       <div class="hero-tools no-print">
         <button class="btn btn-soft" id="fullscreenBtn">전체화면</button>
@@ -815,7 +885,7 @@
       <aside class="panel no-print">
         <div class="panel-head">
           <h2>대회 설정</h2>
-          <p>교내대회에 맞게 종별명과 참가팀 수를 자유롭게 설정할 수 있습니다.</p>
+          <p>교내대회에 맞게 종별명과 참가팀 수, 경기방식을 자유롭게 설정할 수 있습니다.</p>
         </div>
         <div class="panel-body">
           <div class="event-grid">
@@ -831,7 +901,7 @@
 
           <div class="division-setup-box">
             <div>
-              <strong>종별 · 팀 수 설정</strong>
+              <strong>종별·팀 수·방식 설정</strong>
               <span id="divisionSetupSummary">종별과 참가팀 수를 먼저 설정하세요.</span>
             </div>
             <button class="btn btn-primary" id="divisionSetupBtn">① 설정하기</button>
@@ -888,11 +958,11 @@
   <div class="modal hidden" id="divisionSetupModal" role="dialog" aria-modal="true">
     <div class="modal-card">
       <div class="modal-head">
-        <h2>종별 · 참가팀 수 설정</h2>
-        <p>교내대회 운영 방식에 맞게 종별을 추가하거나 삭제하고, 각 종별의 참가팀 수를 설정하세요.</p>
+        <h2>종별·팀 수·방식 설정</h2>
+        <p>교내대회 운영 방식에 맞게 종별을 추가·삭제하고 경기방식, 리그방식, 순위 규칙, 참가팀 수를 설정하세요.</p>
       </div>
       <div class="modal-body">
-        <div class="setup-help">예: 남자부 8팀, 여자부 6팀 / 1학년 5팀, 2학년 7팀 / 농구 남자부 12팀 등 원하는 방식으로 자유롭게 구성할 수 있습니다.</div>
+        <div class="setup-help">각 종별마다 토너먼트 또는 리그전을 선택할 수 있습니다. 리그전은 단일리그(팀당 1회 대결) 또는 더블리그(팀당 2회 대결)를 선택하고, 순위 결정 규칙도 종별마다 설정할 수 있습니다.</div>
         <div class="setup-list" id="divisionSetupList"></div>
         <div class="setup-footer">
           <button class="btn btn-soft" id="addDivisionBtn">＋ 종별 추가</button>
@@ -914,7 +984,7 @@
       </div>
       <div class="modal-body">
         <table class="confirm-table">
-          <thead><tr><th>종별</th><th>참가팀</th><th>대진규모</th><th>부전승</th><th>부전승 제외</th><th>예외 가능</th></tr></thead>
+          <thead><tr><th>종별</th><th>참가팀</th><th>경기방식</th><th>예상 경기</th><th>부전승</th><th>비고</th></tr></thead>
           <tbody id="confirmRows"></tbody>
         </table>
         <div class="notice notice-warning hidden" id="confirmWarning"></div>
@@ -953,8 +1023,9 @@
           </div>
         </div>
         <div class="notice notice-info" style="margin:0 0 10px">
-          예전에 이 프로그램에서 저장한 <strong>엑셀 대진표(.xlsx)</strong>만 남아 있어도 복원할 수 있습니다.
-          엑셀에 저장되지 않았던 정확한 추첨 시각·명단 검증코드·일부 부전승 제외 체크 상태는 <strong>엑셀 복원본</strong>으로 표시됩니다.
+          예전에 이 프로그램에서 저장한 <strong>토너먼트 엑셀 대진표(.xlsx)</strong>는 기록함으로 복원할 수 있습니다.
+          엑셀에 저장되지 않았던 정확한 추첨 시각·명단 검증코드·일부 부전승 제외 체크 상태는 <strong>엑셀 복원본</strong>으로 표시됩니다.<br>
+          <strong>※ 리그전 경기일정·순위표의 엑셀 복원은 현재 지원하지 않습니다.</strong>
         </div>
         <div class="history-list" id="historyList"></div>
       </div>
@@ -985,8 +1056,8 @@
             <p>공개 추첨번호와 번호 출처·제시자를 기록하여 추첨 과정의 공정성과 재현성을 높일 수 있습니다.</p>
           </div>
           <div class="feature-card">
-            <h3>🏆 자동 토너먼트 대진 생성</h3>
-            <p>참가팀 수에 맞춰 단일 토너먼트와 부전승을 자동 배치하고 종별별 대진표를 생성합니다.</p>
+            <h3>🏆 토너먼트·리그전 자동 대진</h3>
+            <p>종별마다 토너먼트 또는 리그전을 선택할 수 있으며, 참가팀 수에 맞춰 부전승 또는 단일·더블리그 대진을 자동 생성합니다.</p>
           </div>
           <div class="feature-card">
             <h3>⏱ 스마트 경기 타임테이블</h3>
@@ -994,11 +1065,11 @@
           </div>
           <div class="feature-card">
             <h3>✍️ 경기 결과 관리</h3>
-            <p>대진표에서 점수를 입력하면 승리팀을 자동 판정하고 다음 라운드로 자동 진출시킵니다.</p>
+            <p>토너먼트는 점수 입력 시 승리팀이 다음 라운드로 자동 진출하고, 리그전은 승·무·패와 승점·득실을 반영해 선택한 순위 규칙에 따라 순위를 자동 계산합니다.</p>
           </div>
           <div class="feature-card">
             <h3>📊 엑셀 대진표·운영표 저장</h3>
-            <p>종별 대진표와 운영표 시트를 자동 생성하고 경기번호를 부여하며 설정에 따라 경기시간·코트를 함께 표시합니다.</p>
+            <p>토너먼트 대진표와 리그전 경기일정·순위표, 운영표 시트를 자동 생성하고 경기번호를 부여하며 설정에 따라 경기시간·코트를 함께 표시합니다.</p>
           </div>
           <div class="feature-card">
             <h3>📤 출력·결과 공유</h3>
@@ -1006,7 +1077,7 @@
           </div>
           <div class="feature-card">
             <h3>🗂 지난 대진 기록 관리</h3>
-            <p>이전 대진을 브라우저에 보관하고 다시 열 수 있으며 기록 백업·복원과 기존 엑셀 대진표 복원을 지원합니다.</p>
+            <p>이전 대진을 브라우저에 보관하고 다시 열 수 있으며 기록 백업·복원과 기존 토너먼트 엑셀 대진표 복원을 지원합니다.</p>
           </div>
           <div class="feature-card">
             <h3>💻 설치 없이 사용</h3>
@@ -1053,7 +1124,7 @@
       <div class="modal-body">
         <div class="update-status" id="updateStatus">최신 버전 정보를 확인하려면 아래 버튼을 눌러 주세요.</div>
         <div class="update-version-grid">
-          <div class="k">현재 버전</div><div class="v" id="updateCurrentVersion">v1.4.26</div>
+          <div class="k">현재 버전</div><div class="v" id="updateCurrentVersion">v1.5.11</div>
           <div class="k">최신 버전</div><div class="v" id="updateLatestVersion">확인 전</div>
           <div class="k">마지막 업데이트</div><div class="v" id="updateReleasedAt">확인 전</div>
           <div class="k">제작</div><div class="v">부산백양고 신태규</div>
@@ -1065,6 +1136,17 @@
         <div class="update-notes" style="margin-top:10px">
           <strong>최근 업데이트 이력</strong>
           <ul>
+            <li><strong>v1.5.11</strong> · 더블리그 경기카드에 홈/원정 배지 추가 및 리그방식 도움말 보강</li>
+            <li><strong>v1.5.10</strong> · 종별 설정의 리그방식 항목에 단일/더블리그 설명 도움말 추가</li>
+            <li><strong>v1.5.9</strong> · 리그전 엑셀 경기일정 시트의 XML 구조 오류 수정</li>
+            <li><strong>v1.5.8</strong> · 종별 카드 경기방식 배지 클래스명 오류 수정</li>
+            <li><strong>v1.5.7</strong> · 종별 카드 레이아웃을 이름+배지 / 메타 1줄 구조로 재정리</li>
+            <li><strong>v1.5.6</strong> · 1단계 설정 문구 정리 및 종별 카드 팀수/부전승 표시 가독성 개선</li>
+            <li><strong>v1.5.5</strong> · 단일/더블리그 선택 및 리그전 순위 규칙 프리셋 선택 기능 추가</li>
+            <li><strong>v1.5.4</strong> · 리그전 경기번호를 최초 생성 번호로 고정하여 화면·타임테이블·CSV·엑셀 간 일관성 개선</li>
+            <li><strong>v1.5.3</strong> · 리그전 엑셀 경기일정·순위표·운영표 출력 및 시간·코트 표시 연동</li>
+            <li><strong>v1.5.2</strong> · 리그전 스마트 타임테이블 연동 및 연속 경기 방지 ON/OFF 적용</li>
+            <li><strong>v1.5.1</strong> · 리그전 1차: 종별 경기방식 선택, 단일리그 대진 자동생성, 점수입력, 기본 순위표 추가</li>
             <li><strong>v1.4.26</strong> · 모바일 화면 하단에 노출되던 불필요한 \\n\\n 문자 제거</li>
             <li><strong>v1.4.25</strong> · 홈 화면에 주요기능 버튼 및 프로그램 기능 안내 팝업 추가</li>
             <li><strong>v1.4.24</strong> · 경기시간·코트 표시 ON/OFF를 엑셀 저장에도 동일하게 적용</li>
@@ -1143,7 +1225,7 @@
     'use strict';
 
     const APP_VERSION = '4.0.0-SCHOOL';
-    const RELEASE_VERSION = '1.4.26';
+    const RELEASE_VERSION = '1.5.11';
     const UPDATE_API_URL = 'https://api.github.com/repos/taegyuab-code/school-sports-draw-updates/contents/latest.json?ref=main';
     const LATEST_HTML_API_URL = 'https://api.github.com/repos/taegyuab-code/school-sports-draw-updates/contents/latest.html?ref=main';
     const UPDATE_SCRIPT_URLS = [];
@@ -1153,7 +1235,7 @@
     const HISTORY_LIMIT = 30;
     const CREATOR = '부산백양고 신태규';
     const DEFAULT_DIVISIONS = [
-      { id: 'division_1', name: '남자부', count: 6 }
+      { id: 'division_1', name: '남자부', count: 6, gameFormat: 'tournament' }
     ];
 
     const $ = id => document.getElementById(id);
@@ -1170,6 +1252,9 @@
         divisions: DEFAULT_DIVISIONS.map(d => ({
           id: d.id,
           name: d.name,
+          gameFormat: d.gameFormat || 'tournament',
+          leagueType: 'single',
+          rankingRule: 'points',
           teams: Array.from({ length: d.count }, (_, i) => ({ name: `${d.name} ${i + 1}팀`, noBye: false }))
         })),
         lock: { locked: false, lockedAt: '', rosterHash: '', snapshot: null },
@@ -1200,6 +1285,95 @@
       if (teamsAtRound === 4) return '준결승';
       return `${teamsAtRound}강`;
     }
+    function competitionFormat(d) { return (d?.format === 'league' || d?.gameFormat === 'league') ? 'league' : 'tournament'; }
+    function isLeagueDivision(d) { return competitionFormat(d) === 'league'; }
+
+    const LEAGUE_RANKING_RULES = {
+      points: {
+        label:'승점형',
+        selectLabel:'승점형 (축구 등)',
+        description:'승점 → 득실차 → 다득점 → 승수 → 추첨순번'
+      },
+      wins: {
+        label:'승수형',
+        selectLabel:'승수형 (배드민턴·농구 등)',
+        description:'승수 → 득실차 → 다득점 → 승점 → 추첨순번'
+      },
+      head2head: {
+        label:'승자승 우선형',
+        selectLabel:'승자승 우선형',
+        description:'승점 → 승자승 → 득실차 → 다득점 → 승수 → 추첨순번'
+      }
+    };
+
+    function normalizeLeagueType(value) { return value === 'double' ? 'double' : 'single'; }
+    function normalizeLeagueRankingRule(value) { return LEAGUE_RANKING_RULES[value] ? value : 'points'; }
+
+    function leagueTypeKey(d) {
+      const direct = d?.leagueType;
+      if (direct) return normalizeLeagueType(direct);
+      const divisionId = d?.divisionId || d?.id;
+      const source = (state.divisions || []).find(x => x.id === divisionId);
+      return normalizeLeagueType(source?.leagueType);
+    }
+
+    function leagueRankingRuleKey(d) {
+      const direct = d?.rankingRule;
+      if (direct) return normalizeLeagueRankingRule(direct);
+      const divisionId = d?.divisionId || d?.id;
+      const source = (state.divisions || []).find(x => x.id === divisionId);
+      return normalizeLeagueRankingRule(source?.rankingRule);
+    }
+
+    function leagueRankingRuleInfo(d) {
+      return LEAGUE_RANKING_RULES[leagueRankingRuleKey(d)] || LEAGUE_RANKING_RULES.points;
+    }
+
+    function leagueTypeLabel(dOrType) {
+      const type = typeof dOrType === 'string' ? normalizeLeagueType(dOrType) : leagueTypeKey(dOrType);
+      return type === 'double' ? '더블리그' : '단일리그';
+    }
+
+    function leagueBaseRoundCount(n) {
+      n = Math.max(0, Number(n) || 0);
+      return n < 2 ? 0 : (n % 2 === 0 ? n - 1 : n);
+    }
+
+    function leagueMatchCount(n, type = 'single') {
+      n = Math.max(0, Number(n) || 0);
+      const single = n * Math.max(0, n - 1) / 2;
+      return normalizeLeagueType(type) === 'double' ? single * 2 : single;
+    }
+
+    function leagueRoundCount(n, type = 'single') {
+      const single = leagueBaseRoundCount(n);
+      return normalizeLeagueType(type) === 'double' ? single * 2 : single;
+    }
+
+    function leagueRoundLabel(d, roundIndex) {
+      const type = leagueTypeKey(d);
+      if (type !== 'double') return `${roundIndex + 1}라운드`;
+      const base = leagueBaseRoundCount(d?.teamCount || d?.teams?.length || 0);
+      const leg = roundIndex < base ? 1 : 2;
+      const within = (roundIndex % Math.max(1, base)) + 1;
+      return `${leg}회차 ${within}라운드`;
+    }
+
+    function formatLabel(d) { return isLeagueDivision(d) ? '리그전' : '토너먼트'; }
+
+    function normalizeCompetitionFormats() {
+      (state.divisions || []).forEach(d => {
+        if (!['tournament','league'].includes(d.gameFormat)) d.gameFormat = 'tournament';
+        d.leagueType = normalizeLeagueType(d.leagueType);
+        d.rankingRule = normalizeLeagueRankingRule(d.rankingRule);
+      });
+      // 잠긴 과거 스냅샷은 검증코드 보존을 위해 누락 필드를 강제로 추가하지 않습니다.
+      (state.lock?.snapshot?.divisions || []).forEach(d => {
+        if (d.gameFormat && !['tournament','league'].includes(d.gameFormat)) delete d.gameFormat;
+        if (d.leagueType && !['single','double'].includes(d.leagueType)) d.leagueType = 'single';
+        if (d.rankingRule && !LEAGUE_RANKING_RULES[d.rankingRule]) d.rankingRule = 'points';
+      });
+    }
     function divisionById(id) { return state.divisions.find(d => d.id === id); }
     function makeDivisionId() {
       return `division_${Date.now().toString(36)}_${Math.random().toString(36).slice(2, 7)}`;
@@ -1214,8 +1388,26 @@
         divisions: state.divisions.map(d => ({
           id: d.id,
           name: d.name,
-          teams: d.teams.map(t => ({ name: cleanText(t.name), noBye: Boolean(t.noBye) }))
+          ...(isLeagueDivision(d) ? {
+            gameFormat: 'league',
+            leagueType: normalizeLeagueType(d.leagueType),
+            rankingRule: normalizeLeagueRankingRule(d.rankingRule)
+          } : {}),
+          teams: d.teams.map(t => ({ name: cleanText(t.name), noBye: isLeagueDivision(d) ? false : Boolean(t.noBye) }))
         }))
+      };
+    }
+
+    function snapshotForDrawSeed(snapshot) {
+      return {
+        ...snapshot,
+        divisions: (snapshot?.divisions || []).map(d => {
+          if (d.gameFormat !== 'league') return { ...d };
+          const copy = { ...d };
+          // 순위 규칙은 경기 결과 해석 규칙이지 팀 추첨 순서를 바꾸는 난수 요소는 아닙니다.
+          delete copy.rankingRule;
+          return copy;
+        })
       };
     }
 
@@ -1360,10 +1552,93 @@
       };
     }
 
+    function buildLeagueDraw(division, seed) {
+      const leagueType = normalizeLeagueType(division.leagueType);
+      const hasRankingRule = Object.prototype.hasOwnProperty.call(division, 'rankingRule');
+      const rankingRule = normalizeLeagueRankingRule(division.rankingRule);
+      const random = seededRandom(seed + '|' + division.id + `|LEAGUE-${leagueType.toUpperCase()}`);
+      const shuffled = shuffle(division.teams.map(t => ({ name: t.name })), random);
+      const leagueTeams = shuffled.map((t, i) => ({ seedNo: i + 1, name: t.name }));
+      const rotation = leagueTeams.map(t => t.name);
+      if (rotation.length % 2 === 1) rotation.push(null);
+      const slotCount = rotation.length;
+      const firstRounds = [];
+      const firstRestTeams = [];
+      let gameNo = 1;
+
+      for (let r = 0; r < slotCount - 1; r++) {
+        const matches = [];
+        let restTeam = '';
+        let roundMatchNo = 1;
+        for (let i = 0; i < slotCount / 2; i++) {
+          let a = rotation[i];
+          let b = rotation[slotCount - 1 - i];
+          if (a == null || b == null) {
+            restTeam = a || b || '';
+            continue;
+          }
+          if (i === 0 && r % 2 === 1) [a, b] = [b, a];
+          matches.push({
+            id: `L${r + 1}-M${roundMatchNo}`,
+            round: r + 1,
+            roundMatchNo,
+            gameNo,
+            matchNo: gameNo,
+            a, b,
+            byeTeam: '', forcedBye: false,
+            format: 'league'
+          });
+          roundMatchNo++;
+          gameNo++;
+        }
+        firstRounds.push(matches);
+        firstRestTeams.push(restTeam);
+        const last = rotation.pop();
+        rotation.splice(1, 0, last);
+      }
+
+      let rounds = firstRounds;
+      let restTeams = firstRestTeams;
+
+      if (leagueType === 'double') {
+        const baseRoundCount = firstRounds.length;
+        const secondRounds = firstRounds.map((round, r) => round.map((m, mi) => {
+          const currentGameNo = gameNo++;
+          return {
+            id: `L${baseRoundCount + r + 1}-M${mi + 1}`,
+            round: baseRoundCount + r + 1,
+            roundMatchNo: mi + 1,
+            gameNo: currentGameNo,
+            matchNo: currentGameNo,
+            a: m.b,
+            b: m.a,
+            byeTeam: '', forcedBye: false,
+            format: 'league',
+            leg: 2
+          };
+        }));
+        rounds = [...firstRounds, ...secondRounds];
+        restTeams = [...firstRestTeams, ...firstRestTeams];
+      }
+
+      return {
+        divisionId: division.id,
+        divisionName: division.name,
+        format: 'league',
+        leagueType,
+        ...(hasRankingRule ? { rankingRule } : {}),
+        teamCount: leagueTeams.length,
+        totalMatches: leagueMatchCount(leagueTeams.length, leagueType),
+        leagueTeams,
+        rounds,
+        restTeams
+      };
+    }
+
     async function createAllDraws(snapshot, publicNumber) {
-      const seedMaterial = stableStringify(snapshot) + '|PUBLIC:' + publicNumber + '|ALGO:' + APP_VERSION;
+      const seedMaterial = stableStringify(snapshotForDrawSeed(snapshot)) + '|PUBLIC:' + publicNumber + '|ALGO:' + APP_VERSION;
       const masterHash = await sha256(seedMaterial);
-      const divisions = snapshot.divisions.map(d => buildDivisionDraw(d, masterHash));
+      const divisions = snapshot.divisions.map(d => d.gameFormat === 'league' ? buildLeagueDraw(d, masterHash) : buildDivisionDraw(d, masterHash));
       const resultCore = { algorithm: APP_VERSION, masterHash, divisions };
       const resultHash = await sha256(stableStringify(resultCore));
       return { ...resultCore, resultHash };
@@ -1376,6 +1651,10 @@
       state.divisions.forEach(d => {
         if (d.teams.length < 2) errors.push(`${d.name}: 참가팀은 2팀 이상이어야 합니다.`);
         if (d.teams.length > 128) errors.push(`${d.name}: 참가팀은 128팀 이하로 입력해 주세요.`);
+        if (isLeagueDivision(d)) {
+          const games = leagueMatchCount(d.teams.length, leagueTypeKey(d));
+          if (games > 2000) errors.push(`${d.name}: ${leagueTypeLabel(d)} 기준 ${games}경기로 너무 많습니다. 리그전은 총 2,000경기 이하가 되도록 팀 수 또는 리그방식을 조정해 주세요.`);
+        }
         const names = d.teams.map(t => cleanText(t.name));
         if (names.some(n => !n)) errors.push(`${d.name}: 빈 팀명이 있습니다.`);
         const duplicates = names.filter((n, i) => names.indexOf(n) !== i);
@@ -1868,6 +2147,7 @@
         if (!state.appVersion) state.appVersion = APP_VERSION;
         if (!state.schedule) state.schedule = { mode: 'combined', showDetails: false, combined: { startTime: '09:00', durationMinutes: 15, courtCount: 1, preventConsecutive: true, minRestMinutes: 0, finalRestMinutes: 0, finalCourt: 1 }, perDivision: {}, divisionGroups: {}, groupSettings: {}, groupOrder: {} };
         if (!state.matchResults || typeof state.matchResults !== 'object') state.matchResults = {};
+        normalizeCompetitionFormats();
       } catch (e) { console.warn(e); }
     }
 
@@ -1887,6 +2167,7 @@
     }
 
     function renderAll() {
+      normalizeCompetitionFormats();
       $('eventName').value = state.eventName ?? '';
       $('sportName').value = state.sportName ?? '';
       $('publicNumber').value = state.publicNumber ?? '';
@@ -1903,7 +2184,7 @@
       const el = $('divisionSetupSummary');
       if (!el) return;
       const total = state.divisions.reduce((sum, d) => sum + d.teams.length, 0);
-      el.textContent = `${state.divisions.length}개 종별 · 총 ${total}팀`;
+      el.textContent = `${state.divisions.length}개 종별 · 총 ${total}팀 · 토너먼트 ${state.divisions.filter(d=>!isLeagueDivision(d)).length} / 리그 ${state.divisions.filter(d=>isLeagueDivision(d)).length}`;
     }
 
     function openDivisionSetup() {
@@ -1911,7 +2192,14 @@
         alert('명단이 잠기거나 추첨이 완료된 상태에서는 종별 설정을 변경할 수 없습니다.\n필요하면 먼저 새 대회를 시작하거나 명단 잠금을 해제해 주세요.');
         return;
       }
-      divisionDraft = state.divisions.map(d => ({ id: d.id, name: d.name, count: d.teams.length }));
+      divisionDraft = state.divisions.map(d => ({
+        id: d.id,
+        name: d.name,
+        count: d.teams.length,
+        gameFormat: competitionFormat(d),
+        leagueType: normalizeLeagueType(d.leagueType),
+        rankingRule: normalizeLeagueRankingRule(d.rankingRule)
+      }));
       renderDivisionSetupRows();
       $('divisionSetupModal').classList.remove('hidden');
     }
@@ -1922,11 +2210,20 @@
 
     function renderDivisionSetupRows() {
       const list = $('divisionSetupList');
-      list.innerHTML = divisionDraft.map((d, i) => `<div class="setup-row" data-index="${i}">
-        <div class="field"><label>종별명</label><input class="setup-name" maxlength="30" value="${escapeHtml(d.name)}" placeholder="예: 남자부" /></div>
-        <div class="field"><label>팀 수</label><input class="setup-count" type="number" min="2" max="128" value="${d.count}" /></div>
-        <button class="btn btn-danger setup-delete" ${divisionDraft.length <= 1 ? 'disabled' : ''}>삭제</button>
-      </div>`).join('');
+      list.innerHTML = divisionDraft.map((d, i) => {
+        const league = d.gameFormat === 'league';
+        const rankingOptions = Object.entries(LEAGUE_RANKING_RULES).map(([key,rule]) =>
+          `<option value="${key}" ${normalizeLeagueRankingRule(d.rankingRule) === key ? 'selected' : ''}>${escapeHtml(rule.selectLabel)}</option>`
+        ).join('');
+        return `<div class="setup-row ${league ? 'league-row' : ''}" data-index="${i}">
+          <div class="field"><label>종별명</label><input class="setup-name" maxlength="30" value="${escapeHtml(d.name)}" placeholder="예: 남자부" /></div>
+          <div class="field setup-format-field"><label>경기방식</label><select class="setup-format"><option value="tournament" ${!league ? 'selected' : ''}>토너먼트</option><option value="league" ${league ? 'selected' : ''}>리그전</option></select></div>
+          ${league ? `<div class="field setup-league-type-field"><label>리그방식 <span class="draw-help-wrap"><button type="button" class="draw-help-btn" aria-label="리그방식 안내">?</button><span class="draw-help-tooltip" role="tooltip">단일리그는 모든 팀이 서로 1번씩 경기하는 방식입니다.<br>더블리그는 홈/어웨이 방식으로 같은 상대와 홈·원정을 바꿔 총 2번 경기하는 방식입니다.</span></span></label><select class="setup-league-type"><option value="single" ${normalizeLeagueType(d.leagueType)==='single'?'selected':''}>단일리그</option><option value="double" ${normalizeLeagueType(d.leagueType)==='double'?'selected':''}>더블리그</option></select></div>
+          <div class="field setup-ranking-field"><label>순위 결정 규칙</label><select class="setup-ranking-rule">${rankingOptions}</select></div>` : ''}
+          <div class="field setup-count-field"><label>팀 수</label><input class="setup-count" type="number" min="2" max="128" value="${d.count}" /></div>
+          <button class="btn btn-danger setup-delete" ${divisionDraft.length <= 1 ? 'disabled' : ''}>삭제</button>
+        </div>`;
+      }).join('');
 
       document.querySelectorAll('#divisionSetupList .setup-row').forEach(row => {
         const i = Number(row.dataset.index);
@@ -1936,6 +2233,20 @@
         });
         row.querySelector('.setup-count').addEventListener('input', e => {
           divisionDraft[i].count = Math.max(2, Math.min(128, Number(e.target.value) || 2));
+          updateDivisionSetupTotal();
+        });
+        row.querySelector('.setup-format').addEventListener('change', e => {
+          divisionDraft[i].gameFormat = e.target.value === 'league' ? 'league' : 'tournament';
+          divisionDraft[i].leagueType = normalizeLeagueType(divisionDraft[i].leagueType);
+          divisionDraft[i].rankingRule = normalizeLeagueRankingRule(divisionDraft[i].rankingRule);
+          renderDivisionSetupRows();
+        });
+        row.querySelector('.setup-league-type')?.addEventListener('change', e => {
+          divisionDraft[i].leagueType = normalizeLeagueType(e.target.value);
+          updateDivisionSetupTotal();
+        });
+        row.querySelector('.setup-ranking-rule')?.addEventListener('change', e => {
+          divisionDraft[i].rankingRule = normalizeLeagueRankingRule(e.target.value);
           updateDivisionSetupTotal();
         });
         row.querySelector('.setup-delete').addEventListener('click', () => {
@@ -1949,11 +2260,14 @@
 
     function updateDivisionSetupTotal() {
       const total = divisionDraft.reduce((sum, d) => sum + (Number(d.count) || 0), 0);
-      $('divisionSetupTotal').textContent = `${divisionDraft.length}개 종별 · 총 ${total}팀`;
+      const leagues = divisionDraft.filter(d => d.gameFormat === 'league');
+      const singles = leagues.filter(d => normalizeLeagueType(d.leagueType) === 'single').length;
+      const doubles = leagues.filter(d => normalizeLeagueType(d.leagueType) === 'double').length;
+      $('divisionSetupTotal').textContent = `${divisionDraft.length}개 종별 · 총 ${total}팀 · 토너먼트 ${divisionDraft.length-leagues.length} / 리그 ${leagues.length}${leagues.length ? ` (단일 ${singles} · 더블 ${doubles})` : ''}`;
     }
 
     function addDivisionSetupRow() {
-      divisionDraft.push({ id: makeDivisionId(), name: `종별 ${divisionDraft.length + 1}`, count: 4 });
+      divisionDraft.push({ id: makeDivisionId(), name: `종별 ${divisionDraft.length + 1}`, count: 4, gameFormat: 'tournament', leagueType:'single', rankingRule:'points' });
       renderDivisionSetupRows();
       const inputs = document.querySelectorAll('#divisionSetupList .setup-name');
       inputs[inputs.length - 1]?.focus();
@@ -1962,11 +2276,17 @@
 
     function applyDivisionSetup() {
       const rows = [...document.querySelectorAll('#divisionSetupList .setup-row')];
-      divisionDraft = rows.map((row, i) => ({
-        id: divisionDraft[i]?.id || makeDivisionId(),
-        name: cleanText(row.querySelector('.setup-name').value),
-        count: Math.max(2, Math.min(128, Number(row.querySelector('.setup-count').value) || 2))
-      }));
+      divisionDraft = rows.map((row, i) => {
+        const gameFormat = row.querySelector('.setup-format').value === 'league' ? 'league' : 'tournament';
+        return {
+          id: divisionDraft[i]?.id || makeDivisionId(),
+          name: cleanText(row.querySelector('.setup-name').value),
+          gameFormat,
+          leagueType: gameFormat === 'league' ? normalizeLeagueType(row.querySelector('.setup-league-type')?.value || divisionDraft[i]?.leagueType) : 'single',
+          rankingRule: gameFormat === 'league' ? normalizeLeagueRankingRule(row.querySelector('.setup-ranking-rule')?.value || divisionDraft[i]?.rankingRule) : 'points',
+          count: Math.max(2, Math.min(128, Number(row.querySelector('.setup-count').value) || 2))
+        };
+      });
       if (!divisionDraft.length) return alert('종별을 1개 이상 설정해 주세요.');
       if (divisionDraft.some(d => !d.name)) return alert('모든 종별명을 입력해 주세요.');
       const names = divisionDraft.map(d => d.name);
@@ -1985,7 +2305,7 @@
             teams.push({ name: `${cfg.name} ${i + 1}팀`, noBye: false });
           }
         }
-        return { id: cfg.id, name: cfg.name, teams };
+        return { id: cfg.id, name: cfg.name, gameFormat: cfg.gameFormat, leagueType: cfg.leagueType, rankingRule: cfg.rankingRule, teams };
       });
 
       if (!state.divisions.some(d => d.id === selectedDivisionId)) selectedDivisionId = state.divisions[0].id;
@@ -1997,10 +2317,14 @@
 
     function renderDivisionList() {
       $('divisionList').innerHTML = state.divisions.map(d => {
-        const bye = nextPowerOfTwo(d.teams.length) - d.teams.length;
+        const league = isLeagueDivision(d);
+        const bye = league ? 0 : nextPowerOfTwo(d.teams.length) - d.teams.length;
+        const meta = league
+          ? `${d.teams.length}팀 · ${leagueTypeLabel(d)} · ${leagueMatchCount(d.teams.length, leagueTypeKey(d))}경기 · ${leagueRankingRuleInfo(d).label}`
+          : `${d.teams.length}팀 · 부전승 ${bye}팀`;
         return `<button class="division-card ${selectedDivisionId === d.id ? 'active' : ''}" data-id="${d.id}">
-          <span class="name">${escapeHtml(d.name)}</span>
-          <span class="meta">${d.teams.length}팀 · 부전승 ${bye}팀</span>
+          <span class="name">${escapeHtml(d.name)} <span class="format-badge ${league ? 'league' : ''}">${league ? '리그전' : '토너먼트'}</span></span>
+          <span class="meta">${escapeHtml(meta)}</span>
           ${state.lock.locked ? '<span class="check">✓</span>' : ''}
         </button>`;
       }).join('');
@@ -2031,21 +2355,31 @@
     function renderEditor() {
       const d = divisionById(selectedDivisionId) || state.divisions[0];
       selectedDivisionId = d.id;
-      $('workspaceTitle').textContent = `${d.name} 참가팀`;
+      const league = isLeagueDivision(d);
+      $('workspaceTitle').textContent = `${d.name} 참가팀 · ${league ? '리그전' : '토너먼트'}`;
       $('workspaceSubtitle').textContent = state.lock.locked ? '명단이 잠겼습니다. 공개번호를 입력해 주세요.' : '팀명을 입력한 뒤 Enter를 누르면 다음 팀명 칸으로 이동합니다.';
-      const byeCount = nextPowerOfTwo(d.teams.length) - d.teams.length;
-      const excludedCount = d.teams.filter(t => t.noBye).length;
+      const byeCount = league ? 0 : nextPowerOfTwo(d.teams.length) - d.teams.length;
+      const excludedCount = league ? 0 : d.teams.filter(t => t.noBye).length;
       const eligibleCount = d.teams.length - excludedCount;
-      const forced = Math.max(0, byeCount - eligibleCount);
+      const forced = league ? 0 : Math.max(0, byeCount - eligibleCount);
 
-      $('workspaceContent').innerHTML = `
+      const summary = league ? `
+        <div class="summary-cards">
+          <div class="summary-card"><div class="label">참가팀</div><div class="value">${d.teams.length}</div></div>
+          <div class="summary-card"><div class="label">리그방식</div><div class="value" style="font-size:16px">${leagueTypeLabel(d)}</div></div>
+          <div class="summary-card"><div class="label">총 경기</div><div class="value">${leagueMatchCount(d.teams.length, leagueTypeKey(d))}</div></div>
+          <div class="summary-card"><div class="label">라운드</div><div class="value">${leagueRoundCount(d.teams.length, leagueTypeKey(d))}</div></div>
+        </div>
+        <div class="notice notice-success">모든 팀이 서로 ${leagueTypeKey(d)==='double'?'두 번':'한 번'}씩 경기합니다.${d.teams.length % 2 ? ' 참가팀이 홀수이므로 각 회차마다 매 라운드 1팀이 휴식합니다.' : ''} 공개 추첨번호로 팀 순서를 먼저 섞은 뒤 라운드별 대진을 자동 생성합니다.<br><strong>순위 규칙:</strong> ${escapeHtml(leagueRankingRuleInfo(d).description)}</div>` : `
         <div class="summary-cards">
           <div class="summary-card"><div class="label">참가팀</div><div class="value">${d.teams.length}</div></div>
           <div class="summary-card"><div class="label">대진 규모</div><div class="value">${nextPowerOfTwo(d.teams.length)}강</div></div>
           <div class="summary-card"><div class="label">부전승</div><div class="value">${byeCount}</div></div>
           <div class="summary-card"><div class="label">부전승 제외</div><div class="value">${excludedCount}</div></div>
         </div>
-        ${forced ? `<div class="notice notice-warning">현재 설정으로는 부전승 가능 팀이 ${eligibleCount}팀뿐인데 부전승은 ${byeCount}팀이 필요합니다. 따라서 체크된 팀 중 ${forced}팀은 공개번호에 따라 예외적으로 부전승에 배정됩니다.</div>` : `<div class="notice notice-info">체크한 팀은 부전승 추첨에서 제외됩니다. 필요한 부전승 수보다 가능한 팀이 적을 때만 최소 인원이 예외 추첨됩니다.</div>`}
+        ${forced ? `<div class="notice notice-warning">현재 설정으로는 부전승 가능 팀이 ${eligibleCount}팀뿐인데 부전승은 ${byeCount}팀이 필요합니다. 따라서 체크된 팀 중 ${forced}팀은 공개번호에 따라 예외적으로 부전승에 배정됩니다.</div>` : `<div class="notice notice-info">체크한 팀은 부전승 추첨에서 제외됩니다. 필요한 부전승 수보다 가능한 팀이 적을 때만 최소 인원이 예외 추첨됩니다.</div>`}`;
+
+      $('workspaceContent').innerHTML = `${summary}
         <div class="editor-top">
           <div class="field" style="margin:0">
             <label for="teamCount">참가팀 수</label>
@@ -2054,7 +2388,7 @@
           <div class="inline-actions">
             <button class="btn btn-soft" id="autoNamesBtn" ${state.lock.locked ? 'disabled' : ''}>예시 팀명 채우기</button>
             <button class="btn btn-soft" id="togglePasteBtn" ${state.lock.locked ? 'disabled' : ''}>엑셀 명단 붙여넣기</button>
-            <button class="btn btn-soft" id="uncheckAllBtn" ${state.lock.locked ? 'disabled' : ''}>모두 체크 해제</button>
+            ${league ? '' : `<button class="btn btn-soft" id="uncheckAllBtn" ${state.lock.locked ? 'disabled' : ''}>모두 체크 해제</button>`}
           </div>
         </div>
         <div class="paste-box hidden" id="pasteBox">
@@ -2068,12 +2402,12 @@
           </div>
         </div>
         <div class="team-editor">
-          <div class="team-head"><span>번호</span><span>팀명</span><span>부전승 제외</span></div>
+          <div class="team-head ${league ? 'league-team-head' : ''}"><span>번호</span><span>팀명</span>${league ? '' : '<span>부전승 제외</span>'}</div>
           <div class="team-list" id="teamList">
-            ${d.teams.map((t, i) => `<div class="team-row" data-index="${i}">
+            ${d.teams.map((t, i) => `<div class="team-row ${league ? 'league-team-row' : ''}" data-index="${i}">
               <div class="team-no">${i + 1}</div>
               <input class="team-name" value="${escapeHtml(t.name)}" ${state.lock.locked ? 'disabled' : ''} aria-label="${d.name} ${i + 1}번 팀명" />
-              <label class="no-bye-label"><input class="no-bye" type="checkbox" ${t.noBye ? 'checked' : ''} ${state.lock.locked ? 'disabled' : ''} /> 부전승 제외</label>
+              ${league ? '' : `<label class="no-bye-label"><input class="no-bye" type="checkbox" ${t.noBye ? 'checked' : ''} ${state.lock.locked ? 'disabled' : ''} /> 부전승 제외</label>`}
             </div>`).join('')}
           </div>
         </div>`;
@@ -2100,13 +2434,13 @@
           const next = document.querySelector(`.team-row[data-index="${i + 1}"] .team-name`);
           if (next) { next.focus(); next.select(); }
         });
-        check.addEventListener('change', () => { d.teams[i].noBye = check.checked; saveState(); renderDivisionList(); renderEditor(); });
+        check?.addEventListener('change', () => { d.teams[i].noBye = check.checked; saveState(); renderDivisionList(); renderEditor(); });
       });
       $('autoNamesBtn').addEventListener('click', () => {
         d.teams = d.teams.map((t, i) => ({ ...t, name: (!cleanText(t.name) || isAutoName(t.name, d.name)) ? `${d.name} ${i + 1}팀` : t.name }));
         saveState(); renderEditor(); toast('예시 팀명을 채웠습니다.');
       });
-      $('uncheckAllBtn').addEventListener('click', () => {
+      $('uncheckAllBtn')?.addEventListener('click', () => {
         d.teams.forEach(t => t.noBye = false); saveState(); renderEditor(); toast('모든 부전승 제외 체크를 해제했습니다.');
       });
       $('togglePasteBtn').addEventListener('click', () => $('pasteBox').classList.toggle('hidden'));
@@ -2163,11 +2497,21 @@
 
     function drawSummaryRows() {
       return state.lock.snapshot.divisions.map(d => {
+        const league = d.gameFormat === 'league';
+        if (league) {
+          const type = normalizeLeagueType(d.leagueType);
+          const rule = LEAGUE_RANKING_RULES[normalizeLeagueRankingRule(d.rankingRule)];
+          return {
+            name:d.name, count:d.teams.length, format:'리그전', detail:leagueTypeLabel(type),
+            games:leagueMatchCount(d.teams.length, type), byes:'-', excluded:0, forced:0,
+            note:`${leagueRoundCount(d.teams.length, type)}라운드 · ${rule.label}`
+          };
+        }
         const size = nextPowerOfTwo(d.teams.length);
         const byes = size - d.teams.length;
         const excluded = d.teams.filter(t => t.noBye).length;
         const forced = Math.max(0, byes - (d.teams.length - excluded));
-        return { name: d.name, count: d.teams.length, size, byes, excluded, forced };
+        return { name:d.name, count:d.teams.length, format:'토너먼트', detail:`${size}강`, games:d.teams.length-1, byes, excluded, forced, note: forced ? `예외 부전승 ${forced}팀` : `부전승 제외 ${excluded}팀` };
       });
     }
 
@@ -2176,7 +2520,7 @@
       if (!/^\d{4,12}$/.test(state.publicNumber)) return alert('추첨에 사용할 4~12자리 공개번호를 입력해 주세요.');
       saveState();
       const rows = drawSummaryRows();
-      $('confirmRows').innerHTML = rows.map(r => `<tr><td><strong>${escapeHtml(r.name)}</strong></td><td>${r.count}</td><td>${r.size}강</td><td>${r.byes}</td><td>${r.excluded}</td><td>${r.forced ? `<strong style="color:#9b6500">${r.forced}팀</strong>` : '없음'}</td></tr>`).join('');
+      $('confirmRows').innerHTML = rows.map(r => `<tr><td><strong>${escapeHtml(r.name)}</strong></td><td>${r.count}</td><td><strong>${r.format}</strong><br><span style="font-size:10px;color:#6b758a">${r.detail}</span></td><td>${r.games}경기</td><td>${r.byes}</td><td>${escapeHtml(r.note)}</td></tr>`).join('');
       const forcedRows = rows.filter(r => r.forced);
       $('confirmWarning').classList.toggle('hidden', !forcedRows.length);
       $('confirmWarning').textContent = forcedRows.length ? `${forcedRows.map(r => `${r.name} ${r.forced}팀`).join(', ')}은(는) 부전승 가능 팀 부족으로 ‘부전승 제외’ 팀 중 최소 인원이 예외 추첨됩니다.` : '';
@@ -2204,7 +2548,7 @@
         $('countdown').textContent = '추첨';
         for (const d of draw.divisions) {
           $('drawEyebrow').textContent = `${d.divisionName} 공개 추첨`;
-          $('rollingText').textContent = `${d.teamCount}팀 · 부전승 ${d.byeCount}팀 · 1회전 ${d.rounds[0].filter(m => !m.byeTeam).length}경기`;
+          $('rollingText').textContent = isLeagueDivision(d) ? `${d.teamCount}팀 · ${leagueTypeLabel(d)} · ${d.totalMatches}경기 · ${d.rounds.length}라운드 · ${leagueRankingRuleInfo(d).label}` : `${d.teamCount}팀 · 부전승 ${d.byeCount}팀 · 1회전 ${d.rounds[0].filter(m => !m.byeTeam).length}경기`;
           await delay(750);
         }
         $('countdown').textContent = '완료';
@@ -2263,7 +2607,7 @@
       state.schedule.groupSettings ||= {};
       state.schedule.groupOrder ||= {};
 
-      const divisions = state.result?.divisions || [];
+      const divisions = (state.result?.divisions || []);
       divisions.forEach((d, i) => {
         state.schedule.perDivision[d.divisionId] ||= cleanScheduleSetting({});
         if (!state.schedule.divisionGroups[d.divisionId]) state.schedule.divisionGroups[d.divisionId] = `group_${i + 1}`;
@@ -2319,7 +2663,7 @@
     }
 
     function matchDependencyKeys(division, roundIndex, matchIndex) {
-      if (roundIndex <= 0) return [];
+      if (isLeagueDivision(division) || roundIndex <= 0) return [];
       const previous = division.rounds[roundIndex - 1] || [];
       return [matchIndex * 2, matchIndex * 2 + 1]
         .map(i => previous[i]).filter(Boolean).filter(m => !m.byeTeam)
@@ -2329,16 +2673,19 @@
     function buildScheduleItems(divisions) {
       const items = [];
       divisions.forEach((division, divisionSeq) => {
+        const league = isLeagueDivision(division);
         division.rounds.forEach((round, roundIndex) => {
           round.forEach((match, matchIndex) => {
             if (match.byeTeam) return;
             items.push({
               division, divisionId: division.divisionId, divisionName: division.divisionName,
               divisionSeq, roundIndex, matchIndex, match,
+              format: league ? 'league' : 'tournament',
+              teams: league ? [match.a, match.b].filter(Boolean) : [],
               key: `${division.divisionId}|${match.id}`,
-              deps: matchDependencyKeys(division, roundIndex, matchIndex),
-              isFinal: roundIndex === division.rounds.length - 1,
-              isSemi: roundIndex === division.rounds.length - 2
+              deps: league ? [] : matchDependencyKeys(division, roundIndex, matchIndex),
+              isFinal: !league && roundIndex === division.rounds.length - 1,
+              isSemi: !league && roundIndex === division.rounds.length - 2
             });
           });
         });
@@ -2347,7 +2694,7 @@
     }
 
     function childKeyFor(item) {
-      if (item.isFinal) return '';
+      if (item.format === 'league' || item.isFinal) return '';
       const nextRound = item.roundIndex + 1;
       const nextMatchIndex = Math.floor(item.matchIndex / 2);
       return `${item.divisionId}|R${nextRound + 1}-M${nextMatchIndex + 1}`;
@@ -2358,9 +2705,25 @@
       return cfg.minRestMinutes;
     }
 
-    function earliestSlotForItem(item, scheduledInfo, cfg) {
-      if (!item.deps.length) return 0;
+    function leagueTeamScheduleKey(item, team) {
+      return `${item.divisionId}|${team}`;
+    }
+
+    function earliestSlotForItem(item, scheduledInfo, cfg, teamLastSlot = new Map()) {
       let earliest = 0;
+
+      if (item.format === 'league') {
+        // 같은 팀의 동시간대 중복은 항상 금지한다.
+        // 연속 경기 방지 ON이면 한 경기 시간만큼(1슬롯) 더 쉬게 한다.
+        const slotGap = cfg.preventConsecutive ? 2 : 1;
+        for (const team of item.teams || []) {
+          const prev = teamLastSlot.get(leagueTeamScheduleKey(item, team));
+          if (prev != null) earliest = Math.max(earliest, prev + slotGap);
+        }
+        return earliest;
+      }
+
+      if (!item.deps.length) return 0;
       const restSlots = Math.ceil(effectiveRestMinutes(cfg, item) / cfg.durationMinutes);
       for (const dep of item.deps) {
         const p = scheduledInfo.get(dep);
@@ -2379,17 +2742,17 @@
       const byKey = new Map(items.map(i => [i.key, i]));
       const scheduledInfo = new Map();
       const scheduled = new Set();
+      const teamLastSlot = new Map();
       const divisionStarted = new Map();
-      const divisionLastSlot = new Map();
       const waitingSince = new Map();
       const slotRows = [];
       let slot = 0, safety = 0;
 
-      while (scheduled.size < items.length && safety++ < 20000) {
+      while (scheduled.size < items.length && safety++ < 30000) {
         const available = [];
         for (const item of items) {
           if (scheduled.has(item.key)) continue;
-          const earliest = earliestSlotForItem(item, scheduledInfo, cfg);
+          const earliest = earliestSlotForItem(item, scheduledInfo, cfg, teamLastSlot);
           if (earliest <= slot) {
             if (!waitingSince.has(item.key)) waitingSince.set(item.key, slot);
             available.push({ ...item, earliest });
@@ -2402,9 +2765,14 @@
           const rank = orderIndex.has(item.divisionId) ? orderIndex.get(item.divisionId) : 999;
           const priorityBase = Math.max(0, divisions.length - rank) * 10000;
           const startedBoost = divisionStarted.has(item.divisionId) ? 900 : 0;
-          const deepRoundBoost = item.roundIndex * 180;
-          const finalBoost = item.isFinal ? 900 : (item.isSemi ? 350 : 0);
           const waitBoost = Math.max(0, slot - (waitingSince.get(item.key) ?? slot)) * 35;
+
+          // 토너먼트는 깊은 라운드를 빠르게 마무리하고,
+          // 리그전은 앞 라운드를 우선하되 휴식 때문에 막히면 다음 라운드로 넘어갈 수 있게 한다.
+          const roundBoost = item.format === 'league'
+            ? Math.max(0, (item.division.rounds.length - item.roundIndex)) * 260
+            : item.roundIndex * 180;
+          const finalBoost = item.format === 'tournament' ? (item.isFinal ? 900 : (item.isSemi ? 350 : 0)) : 0;
 
           const childKey = childKeyFor(item);
           let unlockBoost = 0;
@@ -2413,42 +2781,71 @@
             const siblingReady = child.deps.filter(k => k !== item.key).every(k => scheduledInfo.has(k));
             if (siblingReady) unlockBoost = 220;
           }
-          item.score = priorityBase + startedBoost + deepRoundBoost + finalBoost + waitBoost + unlockBoost;
+          item.score = priorityBase + startedBoost + roundBoost + finalBoost + waitBoost + unlockBoost;
         });
 
-        available.sort((a,b) => b.score - a.score || a.roundIndex - b.roundIndex || a.matchIndex - b.matchIndex);
-        const chosen = available.slice(0, cfg.courtCount);
+        available.sort((a,b) =>
+          b.score - a.score ||
+          a.roundIndex - b.roundIndex ||
+          a.matchIndex - b.matchIndex
+        );
 
-        // 결승/준결승 코트 선호를 먼저 반영한다.
+        // 코트 수만큼 고르되, 리그전은 같은 팀이 같은 시간대 두 경기에 들어가지 않도록 한다.
+        const chosen = [];
+        const usedTeamsThisSlot = new Set();
+        for (const item of available) {
+          if (chosen.length >= cfg.courtCount) break;
+          if (item.format === 'league') {
+            const keys = (item.teams || []).map(team => leagueTeamScheduleKey(item, team));
+            if (keys.some(k => usedTeamsThisSlot.has(k))) continue;
+            keys.forEach(k => usedTeamsThisSlot.add(k));
+          }
+          chosen.push(item);
+        }
+
+        if (!chosen.length) { slot++; continue; }
+
         const courtOrder = Array.from({length: cfg.courtCount}, (_, i) => i + 1);
         const freeCourts = new Set(courtOrder);
-        const assignOrder = [...chosen].sort((a,b) => Number(b.isFinal) - Number(a.isFinal) || Number(b.isSemi) - Number(a.isSemi));
+        const assignOrder = [...chosen].sort((a,b) =>
+          Number(b.isFinal) - Number(a.isFinal) ||
+          Number(b.isSemi) - Number(a.isSemi)
+        );
         const slotAssignments = [];
 
         for (const item of assignOrder) {
           let court = null;
-          if (item.isSemi) {
-            court = [1,2].find(c => freeCourts.has(c)) || null;
-          }
+          if (item.isSemi) court = [1,2].find(c => freeCourts.has(c)) || null;
           if (!court) court = [...freeCourts][0];
           freeCourts.delete(court);
 
           const startMinute = base + slot * cfg.durationMinutes;
+          const roundName = item.format === 'league'
+            ? leagueRoundLabel(item.division, item.roundIndex)
+            : roundTitle(item.division.bracketSize, item.roundIndex);
+          const displayMatchId = item.format === 'league'
+            ? `${item.divisionName}-${item.match.gameNo || item.match.matchNo}`
+            : item.match.id;
+
           const info = {
             key: item.key, groupId, divisionId: item.divisionId, divisionName: item.divisionName,
-            matchId: item.match.id, match: item.match, roundIndex: item.roundIndex,
-            roundName: roundTitle(item.division.bracketSize, item.roundIndex),
-            isFinal: item.isFinal, isSemi: item.isSemi,
+            format: item.format,
+            matchId: item.match.id, displayMatchId, match: item.match, roundIndex: item.roundIndex,
+            roundName, isFinal: item.isFinal, isSemi: item.isSemi,
             slot, court, startMinute, endMinute: startMinute + cfg.durationMinutes,
             time: formatMinutes(startMinute), endTime: formatMinutes(startMinute + cfg.durationMinutes),
             score: item.score
           };
+
           scheduled.add(item.key);
           scheduledInfo.set(item.key, info);
           divisionStarted.set(item.divisionId, Math.min(divisionStarted.get(item.divisionId) ?? slot, slot));
-          divisionLastSlot.set(item.divisionId, slot);
+          if (item.format === 'league') {
+            (item.teams || []).forEach(team => teamLastSlot.set(leagueTeamScheduleKey(item, team), slot));
+          }
           slotAssignments.push(info);
         }
+
         slotRows.push({slot, assignments: slotAssignments});
         slot++;
       }
@@ -2460,6 +2857,7 @@
       const { cfg, items, map, divisions } = groupBundle;
       const errors = [];
       const seenCourt = new Set();
+      const itemByKey = new Map(items.map(i => [i.key, i]));
 
       for (const item of items) {
         const info = map.get(item.key);
@@ -2468,19 +2866,48 @@
         if (seenCourt.has(ck)) errors.push(`${info.time} ${info.court}코트: 중복 배정`);
         seenCourt.add(ck);
 
-        const earliest = earliestSlotForItem(item, map, cfg);
-        if (item.deps.length && info.slot < earliest) {
-          errors.push(`${item.divisionName} ${item.match.id}: 선행경기/휴식시간 조건 위반`);
+        if (item.format === 'tournament' && item.deps.length) {
+          let earliest = 0;
+          const restSlots = Math.ceil(effectiveRestMinutes(cfg, item) / cfg.durationMinutes);
+          for (const dep of item.deps) {
+            const p = map.get(dep);
+            if (!p) { earliest = Infinity; break; }
+            earliest = Math.max(earliest, p.slot + 1 + restSlots);
+          }
+          if (info.slot < earliest) errors.push(`${item.divisionName} ${item.match.id}: 선행경기/휴식시간 조건 위반`);
+        }
+      }
+
+      // 리그전: 같은 종별·같은 팀이 같은 시간대에 두 경기 출전하지 않도록 하고,
+      // 연속 경기 방지 ON이면 최소 한 경기 시간(1슬롯)을 비운다.
+      const leagueInfos = [...map.values()]
+        .filter(info => itemByKey.get(info.key)?.format === 'league')
+        .sort((a,b) => a.slot - b.slot || a.court - b.court);
+      const lastSlotByTeam = new Map();
+      for (const info of leagueInfos) {
+        const item = itemByKey.get(info.key);
+        const minGap = cfg.preventConsecutive ? 2 : 1;
+        for (const team of item.teams || []) {
+          const teamKey = `${item.divisionId}|${team}`;
+          const prev = lastSlotByTeam.get(teamKey);
+          if (prev != null && info.slot - prev < minGap) {
+            errors.push(`${item.divisionName} ${team}: ${cfg.preventConsecutive ? '연속 경기 방지' : '동시간대 중복'} 조건 위반`);
+          }
+          lastSlotByTeam.set(teamKey, info.slot);
         }
       }
 
       divisions.forEach(d => {
         const actual = items.filter(i => i.divisionId === d.divisionId).length;
-        const expected = Math.max(0, d.teamCount - 1);
-        if (actual !== expected) errors.push(`${d.divisionName}: 실제 경기 ${actual}경기 ≠ 예상 ${expected}경기(참가팀-1)`);
+        const expected = isLeagueDivision(d)
+          ? Number(d.totalMatches || leagueMatchCount(d.teamCount))
+          : Math.max(0, d.teamCount - 1);
+        if (actual !== expected) {
+          errors.push(`${d.divisionName}: 실제 경기 ${actual}경기 ≠ 예상 ${expected}경기`);
+        }
       });
 
-      return errors;
+      return [...new Set(errors)];
     }
 
     function groupSummary(groupBundle) {
@@ -2512,10 +2939,12 @@
       const schedule = normalizeSchedule();
       const groups = [];
       const allMap = new Map();
+      const schedulable = state.result.divisions;
+      if (!schedulable.length) return { map:allMap, groups, errors:[] };
 
       if (schedule.mode === 'separate') {
         const grouped = new Map();
-        state.result.divisions.forEach(d => {
+        schedulable.forEach(d => {
           const gid = schedule.divisionGroups[d.divisionId] || `group_${d.divisionId}`;
           if (!grouped.has(gid)) grouped.set(gid, []);
           grouped.get(gid).push(d);
@@ -2528,7 +2957,7 @@
           bundle.map.forEach((v,k) => allMap.set(k,v));
         });
       } else {
-        const divisions = state.result.divisions;
+        const divisions = schedulable;
         const order = divisions.map(d => d.divisionId);
         const bundle = scheduleGroupSmart(divisions, schedule.combined, order, 'combined');
         bundle.errors = validateGroupSchedule(bundle);
@@ -2615,9 +3044,11 @@
         if (!infos.length) return;
         const first = infos.reduce((a,b) => a.startMinute < b.startMinute ? a : b);
         const last = infos.reduce((a,b) => a.endMinute > b.endMinute ? a : b);
-        const final = infos.find(x => x.isFinal);
+        const final = isLeagueDivision(d) ? null : infos.find(x => x.isFinal);
         rows.push({
-          name:d.divisionName, teams:d.teamCount, games:infos.length,
+          name:d.divisionName,
+          format:isLeagueDivision(d) ? '리그전' : '토너먼트',
+          teams:d.teamCount, games:infos.length,
           first:first.time, final:final?.time || '-', end:last.endTime,
           span: Math.max(0, last.endMinute - first.startMinute)
         });
@@ -2658,7 +3089,7 @@
             const x = byCourt.get(i+1);
             if (!x) return '<td></td>';
             const cls = x.isFinal ? 'tt-final' : '';
-            return `<td class="${cls}"><div class="tt-match">${escapeHtml(x.divisionName)} · ${escapeHtml(x.roundName)} · ${escapeHtml(x.matchId)}
+            return `<td class="${cls}"><div class="tt-match">${escapeHtml(x.divisionName)} · ${escapeHtml(x.roundName)} · ${escapeHtml(x.displayMatchId || x.matchId)}
               <span class="sub">${escapeHtml(x.match.a)} vs ${escapeHtml(x.match.b)}</span></div></td>`;
           }).join('');
           return `<tr><th>${escapeHtml(t)}</th>${cells}</tr>`;
@@ -2672,12 +3103,12 @@
 
       const divisionSummary = `<h3 style="margin:18px 0 7px">종별 요약</h3>
         <div class="timetable-table-wrap"><table class="division-summary-table"><thead><tr>
-          <th>종별</th><th>참가팀</th><th>실제 경기</th><th>첫 경기</th><th>결승</th><th>종료</th><th>운영시간</th>
-        </tr></thead><tbody>${divRows.map(r=>`<tr><td>${escapeHtml(r.name)}</td><td>${r.teams}</td><td>${r.games}</td><td>${r.first}</td><td>${r.final}</td><td>${r.end}</td><td>${Math.floor(r.span/60)}시간 ${r.span%60}분</td></tr>`).join('')}</tbody></table></div>`;
+          <th>종별</th><th>방식</th><th>참가팀</th><th>실제 경기</th><th>첫 경기</th><th>결승</th><th>종료</th><th>운영시간</th>
+        </tr></thead><tbody>${divRows.map(r=>`<tr><td>${escapeHtml(r.name)}</td><td>${escapeHtml(r.format)}</td><td>${r.teams}</td><td>${r.games}</td><td>${r.first}</td><td>${r.final}</td><td>${r.end}</td><td>${Math.floor(r.span/60)}시간 ${r.span%60}분</td></tr>`).join('')}</tbody></table></div>`;
 
       const validation = errors.length
         ? `<div class="notice notice-warning"><strong>타임테이블 검증 오류 ${errors.length}건</strong><br>${errors.slice(0,12).map(e=>escapeHtml(e)).join('<br>')}${errors.length>12?'<br>…':''}</div>`
-        : `<div class="notice notice-success"><strong>✓ 타임테이블 검증 완료</strong><br>코트 중복, 선행경기, 연속 경기 간격, 부전승, 전체 경기 수 조건을 충족합니다.</div>`;
+        : `<div class="notice notice-success"><strong>✓ 타임테이블 검증 완료</strong><br>코트 중복, 토너먼트 선행경기, 리그전 동일팀 중복·연속 경기, 부전승, 전체 경기 수 조건을 충족합니다.</div>`;
 
       return summary + validation + groupBlocks + divisionSummary;
     }
@@ -2691,7 +3122,10 @@
       const schedule = normalizeSchedule();
       const mode = schedule.mode || 'combined';
       const combined = cleanScheduleSetting(schedule.combined);
-      const divisions = state.result.divisions;
+      const allDivisions = state.result.divisions;
+      const leagueDivisions = allDivisions.filter(d => isLeagueDivision(d));
+      const divisions = allDivisions;
+      const leagueNotice = leagueDivisions.length ? `<div class="notice notice-success" style="margin:0 0 10px"><strong>리그전 타임테이블 연동</strong> · 같은 팀의 동시간대 중복 출전은 항상 방지합니다. <strong>연속 경기 방지 ON</strong>이면 같은 팀이 최소 한 경기 시간만큼 쉬고 다음 경기를 하도록 편성하며, <strong>OFF</strong>이면 바로 다음 시간대 경기까지 허용합니다.</div>` : '';
       const groupOptions = divisions.map((_, i) => `group_${i + 1}`);
 
       const assignmentRows = divisions.map(d => {
@@ -2729,7 +3163,7 @@
                 <span class="toggle-slider"></span>
               </label>
               <span class="toggle-state">${v.preventConsecutive ? 'ON' : 'OFF'}</span>
-              <span class="toggle-help">ON: 앞 경기가 끝난 뒤 한 경기 시간만큼 간격을 두고 다음 경기를 배정합니다. · OFF: 선행경기 종료 직후 다음 경기 배정이 가능합니다.</span>
+              <span class="toggle-help">ON: 토너먼트 선행경기 또는 리그전 같은 팀 경기 후 한 경기 시간만큼 쉬고 다음 경기를 배정합니다. · OFF: 바로 다음 시간대 경기까지 허용합니다.</span>
             </div>
           </div>
           ${settingFields(v,'group-')}
@@ -2749,6 +3183,7 @@
           </div>
           <button type="button" class="schedule-collapse-btn" id="scheduleCollapseBtn" aria-expanded="${schedule.panelCollapsed ? 'false' : 'true'}">${schedule.panelCollapsed ? '펼치기 ▼' : '접기 ▲'}</button>
         </div>
+        ${leagueNotice}
         <div id="schedulePanelBody" class="${schedule.panelCollapsed ? 'hidden' : ''}">
         <div class="schedule-mode-row">
           <label><input type="checkbox" id="scheduleShowDetails" ${schedule.showDetails === true ? 'checked' : ''}> 대진표에 경기시간 · 코트 표시</label>
@@ -2760,7 +3195,7 @@
             <label><input type="radio" name="scheduleMode" value="separate" ${mode==='separate'?'checked':''}> 종별 별도 진행</label>
           </div>
           <div id="combinedScheduleBox" class="${mode==='combined'?'':'hidden'}">
-            <div class="notice notice-info" style="margin:0 0 8px"><strong>Dependency 기반 편성</strong> · 라운드 전체 종료를 기다리지 않고 선행경기와 휴식조건이 충족된 독립 대진은 다음 라운드로 진행합니다.</div>
+            <div class="notice notice-info" style="margin:0 0 8px"><strong>스마트 혼합 편성</strong> · 토너먼트는 선행경기·휴식조건을, 리그전은 동일팀 중복·휴식조건을 반영해 가능한 경기를 자동 배정합니다.</div>
             <div class="schedule-group-row" data-group-id="combined">
               <div><div class="schedule-group-title">전체 통합 설정</div>
                 <div class="schedule-group-members">모든 종별이 같은 코트 풀을 사용합니다.</div>
@@ -2771,7 +3206,7 @@
                     <span class="toggle-slider"></span>
                   </label>
                   <span class="toggle-state" id="combinedPreventState">${combined.preventConsecutive ? 'ON' : 'OFF'}</span>
-                  <span class="toggle-help">ON: 앞 경기가 끝난 뒤 한 경기 시간만큼 간격을 두고 다음 경기를 배정합니다. · OFF: 선행경기 종료 직후 다음 경기 배정이 가능합니다.</span>
+                  <span class="toggle-help">ON: 토너먼트 선행경기 또는 리그전 같은 팀 경기 후 한 경기 시간만큼 쉬고 다음 경기를 배정합니다. · OFF: 바로 다음 시간대 경기까지 허용합니다.</span>
                 </div>
               </div>
               ${settingFields(combined,'combined-')}
@@ -2959,9 +3394,9 @@
       if (!state.result.divisions.some(d => d.divisionId === selectedDivisionId)) selectedDivisionId = state.result.divisions[0].divisionId;
       const selected = state.result.divisions.find(d => d.divisionId === selectedDivisionId);
       const allForPrint = state.result.divisions.map(d =>
-        d.divisionId === 'high_m'
-          ? highMaleSplitPrintHtml(d)
-          : divisionResultHtml(d, false)
+        isLeagueDivision(d)
+          ? leagueResultHtml(d, false)
+          : (d.divisionId === 'high_m' ? highMaleSplitPrintHtml(d) : divisionResultHtml(d, false))
       ).join('');
       $('workspaceContent').innerHTML = `
         <div class="result-header">
@@ -2971,15 +3406,16 @@
             <button class="btn btn-primary result-print-btn" id="resultXlsxBtn">📊 엑셀 대진표 저장</button>
           </div>
         </div>
-        <div class="result-tabs no-print">${state.result.divisions.map(d => `<button class="result-tab ${d.divisionId === selectedDivisionId ? 'active' : ''}" data-result-id="${d.divisionId}">${escapeHtml(d.divisionName)} ${d.teamCount}팀</button>`).join('')}</div>
+        <div class="result-tabs no-print">${state.result.divisions.map(d => `<button class="result-tab ${d.divisionId === selectedDivisionId ? 'active' : ''}" data-result-id="${d.divisionId}">${escapeHtml(d.divisionName)} ${d.teamCount}팀 · ${isLeagueDivision(d) ? '리그' : '토너먼트'}</button>`).join('')}</div>
         ${schedulePanelHtml()}
-        <div id="screenResult">${divisionResultHtml(selected, true)}</div>
+        <div id="screenResult">${isLeagueDivision(selected) ? leagueResultHtml(selected, true) : divisionResultHtml(selected, true)}</div>
         <div class="hidden print-all" id="printAllResults">${allForPrint}</div>
         ${auditHtml(audit)}`;
       $('resultXlsxBtn')?.addEventListener('click', exportXlsxBracket);
       bindScheduleEvents();
       bindDrawHelpTooltips();
       bindScoreInputs();
+      bindLeagueScoreInputs();
       document.querySelectorAll('.result-tab').forEach(btn => btn.addEventListener('click', () => {
         selectedDivisionId = btn.dataset.resultId;
         renderDivisionList(); renderResults();
@@ -3447,6 +3883,169 @@
       </div>`;
     }
 
+    function leagueScoreRecord(divisionId, matchId, create = true) {
+      return scoreRecord(divisionId, matchId, create);
+    }
+
+    function leagueMatchResult(d, m) {
+      const rec = leagueScoreRecord(d.divisionId, m.id, false) || { scoreA:'', scoreB:'' };
+      const scoreA = normalizeScoreValue(rec.scoreA);
+      const scoreB = normalizeScoreValue(rec.scoreB);
+      const complete = scoreA !== '' && scoreB !== '';
+      const a = Number(scoreA), b = Number(scoreB);
+      return {
+        ...m, scoreA, scoreB, complete,
+        winner: complete && a !== b ? (a > b ? m.a : m.b) : '',
+        draw: complete && a === b
+      };
+    }
+
+    function leagueHeadToHeadStats(d, teamNames) {
+      const names = new Set(teamNames);
+      const stats = new Map(teamNames.map(name => [name, { points:0, wins:0, scored:0, conceded:0, diff:0 }]));
+      (d.rounds || []).flat().forEach(m => {
+        if (!names.has(m.a) || !names.has(m.b)) return;
+        const r = leagueMatchResult(d,m);
+        if (!r.complete) return;
+        const a = stats.get(m.a), b = stats.get(m.b);
+        const sa = Number(r.scoreA), sb = Number(r.scoreB);
+        a.scored += sa; a.conceded += sb;
+        b.scored += sb; b.conceded += sa;
+        if (sa > sb) { a.wins++; a.points += 3; }
+        else if (sa < sb) { b.wins++; b.points += 3; }
+        else { a.points++; b.points++; }
+      });
+      stats.forEach(s => s.diff = s.scored - s.conceded);
+      return stats;
+    }
+
+    function leagueStandings(d) {
+      const teams = (d.leagueTeams || []).map(t => ({
+        seedNo:t.seedNo, name:t.name, played:0, wins:0, draws:0, losses:0,
+        scored:0, conceded:0, diff:0, points:0
+      }));
+      const map = new Map(teams.map(t => [t.name,t]));
+      (d.rounds || []).flat().forEach(m => {
+        const r = leagueMatchResult(d,m);
+        if (!r.complete) return;
+        const a = map.get(m.a), b = map.get(m.b);
+        if (!a || !b) return;
+        const sa = Number(r.scoreA), sb = Number(r.scoreB);
+        a.played++; b.played++;
+        a.scored += sa; a.conceded += sb;
+        b.scored += sb; b.conceded += sa;
+        if (sa > sb) { a.wins++; b.losses++; a.points += 3; }
+        else if (sa < sb) { b.wins++; a.losses++; b.points += 3; }
+        else { a.draws++; b.draws++; a.points++; b.points++; }
+      });
+      teams.forEach(t => t.diff = t.scored - t.conceded);
+
+      const rule = leagueRankingRuleKey(d);
+      const fallbackPoints = (a,b) =>
+        b.points-a.points || b.diff-a.diff || b.scored-a.scored || b.wins-a.wins || a.seedNo-b.seedNo;
+      const fallbackWins = (a,b) =>
+        b.wins-a.wins || b.diff-a.diff || b.scored-a.scored || b.points-a.points || a.seedNo-b.seedNo;
+
+      let sorted;
+      if (rule === 'wins') {
+        sorted = [...teams].sort(fallbackWins);
+      } else if (rule === 'head2head') {
+        // 먼저 승점으로 묶은 뒤, 동률 그룹 안에서 상대전적(미니리그)을 우선 적용합니다.
+        const groups = new Map();
+        teams.forEach(t => {
+          if (!groups.has(t.points)) groups.set(t.points, []);
+          groups.get(t.points).push(t);
+        });
+        sorted = [...groups.keys()].sort((a,b)=>b-a).flatMap(points => {
+          const group = groups.get(points);
+          if (group.length <= 1) return group;
+          const h2h = leagueHeadToHeadStats(d, group.map(t => t.name));
+          return [...group].sort((a,b) => {
+            const ha = h2h.get(a.name), hb = h2h.get(b.name);
+            return hb.points-ha.points ||
+              hb.wins-ha.wins ||
+              hb.diff-ha.diff ||
+              hb.scored-ha.scored ||
+              b.diff-a.diff ||
+              b.scored-a.scored ||
+              b.wins-a.wins ||
+              a.seedNo-b.seedNo;
+          });
+        });
+      } else {
+        sorted = [...teams].sort(fallbackPoints);
+      }
+
+      return sorted.map((t,i)=>({...t, rank:i+1}));
+    }
+
+    function updateLeagueScore(divisionId, matchId, side, rawValue) {
+      const d = state.result?.divisions?.find(x => x.divisionId === divisionId && isLeagueDivision(x));
+      const m = d?.rounds?.flat()?.find(x => x.id === matchId);
+      if (!d || !m) return;
+      const rec = leagueScoreRecord(divisionId, matchId, true);
+      if (side === 'A') rec.scoreA = normalizeScoreValue(rawValue);
+      else rec.scoreB = normalizeScoreValue(rawValue);
+      saveState(); archiveCurrentDraw(); renderResults();
+      const r = leagueMatchResult(d,m);
+      if (r.complete) toast(r.draw ? `${m.a} vs ${m.b} 무승부 · 순위표에 반영했습니다.` : `${r.winner} 승리 · 순위표에 반영했습니다.`);
+    }
+
+    function bindLeagueScoreInputs() {
+      document.querySelectorAll('#screenResult .league-score-input').forEach(input => {
+        input.addEventListener('change', () => updateLeagueScore(input.dataset.divisionId, input.dataset.matchId, input.dataset.side, input.value));
+      });
+    }
+
+    function leagueResultHtml(d, interactive = false) {
+      const standings = leagueStandings(d);
+      const completed = (d.rounds || []).flat().filter(m => leagueMatchResult(d,m).complete).length;
+      const standingsRows = standings.map(t => `<tr class="${t.rank===1?'rank-1':''}">
+        <td><span class="league-rank">${t.rank}</span></td><td class="team">${escapeHtml(t.name)}</td>
+        <td>${t.played}</td><td>${t.wins}</td><td>${t.draws}</td><td>${t.losses}</td>
+        <td>${t.scored}</td><td>${t.conceded}</td><td>${t.diff>0?'+':''}${t.diff}</td><td><strong>${t.points}</strong></td>
+      </tr>`).join('');
+
+      const roundsHtml = (d.rounds || []).map((round, ri) => `<section class="league-round-block">
+        <div class="league-round-head"><h3>${escapeHtml(leagueRoundLabel(d,ri))}</h3>${d.restTeams?.[ri] ? `<span class="league-rest">휴식 · ${escapeHtml(d.restTeams[ri])}</span>` : ''}</div>
+        <div class="league-match-grid">${round.map(m => {
+          const r = leagueMatchResult(d,m);
+          const resultText = !r.complete ? '경기 전' : (r.draw ? '무승부' : `${r.winner} 승`);
+          const scheduledTime = matchScheduledTime(d.divisionId, m);
+          return `<article class="league-match-card">
+            <div class="league-match-meta"><span>${escapeHtml(d.divisionName)}-${m.gameNo}${scheduledTime ? `<span class="match-time">${escapeHtml(scheduledTime)}</span>` : ''}</span><span>${escapeHtml(m.id)}</span></div>
+            <div class="league-match-body">
+              <div class="league-team">${leagueTypeKey(d)==='double' ? '<span class="league-venue-badge home">홈</span>' : ''}<span class="league-team-name">${escapeHtml(m.a)}</span></div>
+              ${interactive ? `<input class="league-score-input" type="number" min="0" max="999" inputmode="numeric" value="${escapeHtml(r.scoreA)}" data-division-id="${escapeHtml(d.divisionId)}" data-match-id="${escapeHtml(m.id)}" data-side="A" aria-label="${escapeHtml(m.a)} 점수">` : `<div class="score-value">${escapeHtml(r.scoreA)}</div>`}
+              <div class="league-vs">:</div>
+              ${interactive ? `<input class="league-score-input" type="number" min="0" max="999" inputmode="numeric" value="${escapeHtml(r.scoreB)}" data-division-id="${escapeHtml(d.divisionId)}" data-match-id="${escapeHtml(m.id)}" data-side="B" aria-label="${escapeHtml(m.b)} 점수">` : `<div class="score-value">${escapeHtml(r.scoreB)}</div>`}
+              <div class="league-team"><span class="league-team-name">${escapeHtml(m.b)}</span>${leagueTypeKey(d)==='double' ? '<span class="league-venue-badge away">원정</span>' : ''}</div>
+              <div class="league-match-result">${escapeHtml(resultText)}</div>
+            </div>
+          </article>`;
+        }).join('')}</div>
+      </section>`).join('');
+
+      return `<section class="division-result league-result" data-division="${escapeHtml(d.divisionId)}">
+        <div class="print-fit-content">
+          <div class="division-banner"><div><h2>${escapeHtml(d.divisionName)} ${escapeHtml(leagueTypeLabel(d))}</h2><p>참가팀 ${d.teamCount}팀 · 총 ${d.totalMatches}경기 · ${d.rounds.length}라운드 · 완료 ${completed}경기</p></div><div class="division-stamp">리그전</div></div>
+          <div class="summary-cards">
+            <div class="summary-card"><div class="label">참가팀</div><div class="value">${d.teamCount}</div></div>
+            <div class="summary-card"><div class="label">총 경기</div><div class="value">${d.totalMatches}</div></div>
+            <div class="summary-card"><div class="label">진행 경기</div><div class="value">${completed}</div></div>
+            <div class="summary-card"><div class="label">남은 경기</div><div class="value">${Math.max(0,d.totalMatches-completed)}</div></div>
+          </div>
+          ${interactive ? `<div class="league-score-guide">각 경기의 점수를 입력하면 아래 순위표에 즉시 반영됩니다. 스마트 타임테이블을 켜면 경기시간·코트도 함께 표시됩니다.${leagueTypeKey(d)==='double' ? '<br><strong>홈/어웨이:</strong> 같은 상대와 홈·원정을 바꿔 총 2번 경기합니다.' : ''}<br><strong>${escapeHtml(leagueRankingRuleInfo(d).label)}</strong> · ${escapeHtml(leagueRankingRuleInfo(d).description)}</div>` : ''}
+          <h3 style="margin:8px 0">순위표</h3>
+          <div class="league-standings-wrap"><table class="league-standings"><thead><tr><th>순위</th><th>팀</th><th>경기</th><th>승</th><th>무</th><th>패</th><th>득점</th><th>실점</th><th>득실</th><th>승점</th></tr></thead><tbody>${standingsRows}</tbody></table></div>
+          <div class="league-basic-rule">※ 승점 계산: 승 3점 · 무 1점 · 패 0점. 현재 순위 규칙: ${escapeHtml(leagueRankingRuleInfo(d).description)}</div>
+          <h3 style="margin:16px 0 8px">라운드별 경기</h3>
+          <div class="league-rounds">${roundsHtml}</div>
+          <div class="print-meta">${escapeHtml(state.eventName)}${state.sportName ? ` · ${escapeHtml(state.sportName)}` : ''} · ${escapeHtml(d.divisionName)} ${escapeHtml(leagueTypeLabel(d))} · ${escapeHtml(leagueRankingRuleInfo(d).label)} · 추첨번호 ${escapeHtml(state.audit?.drawId || '')}</div>
+        </div>
+      </section>`;
+    }
+
     function auditHtml(a) {
       return `<div class="audit">
         <h3>추첨 검증 정보</h3>
@@ -3473,9 +4072,19 @@
         `추첨 횟수: 1회 · 자동 확정`, ''
       ];
       state.result.divisions.forEach(d => {
-        lines.push(`■ ${d.divisionName} ${d.teamCount}팀`);
-        lines.push(`부전승(${d.byeCount}팀): ${d.byeTeams.map(t => t.name + (t.forced ? '[예외]' : '')).join(', ') || '없음'}`);
-        d.rounds[0].filter(m => !m.byeTeam).forEach(m => lines.push(`${m.id}: ${m.a} vs ${m.b}`));
+        if (isLeagueDivision(d)) {
+          lines.push(`■ ${d.divisionName} · ${leagueTypeLabel(d)} · ${d.teamCount}팀 · ${d.totalMatches}경기 · ${leagueRankingRuleInfo(d).label}`);
+          lines.push(`추첨순번: ${(d.leagueTeams||[]).map(t=>`${t.seedNo}.${t.name}`).join(' / ')}`);
+          d.rounds.forEach((round,ri) => {
+            const rest = d.restTeams?.[ri] ? ` · 휴식 ${d.restTeams[ri]}` : '';
+            lines.push(`[${leagueRoundLabel(d,ri)}${rest}]`);
+            round.forEach(m => lines.push(`${d.divisionName}-${m.gameNo}: ${m.a} vs ${m.b}`));
+          });
+        } else {
+          lines.push(`■ ${d.divisionName} ${d.teamCount}팀`);
+          lines.push(`부전승(${d.byeCount}팀): ${d.byeTeams.map(t => t.name + (t.forced ? '[예외]' : '')).join(', ') || '없음'}`);
+          d.rounds[0].filter(m => !m.byeTeam).forEach(m => lines.push(`${m.id}: ${m.a} vs ${m.b}`));
+        }
         lines.push('');
       });
       lines.push(`결과 검증코드: ${state.audit.resultHash.slice(0, 24).toUpperCase()}`);
@@ -3487,14 +4096,21 @@
     function csvEscape(v) { const s = String(v ?? ''); return /[",\n]/.test(s) ? `"${s.replaceAll('"','""')}"` : s; }
     function exportCsv() {
       if (!state.result) return;
-      const rows = [['대회명', state.eventName], ['종목', state.sportName], ['프로그램 제작', CREATOR], ['추첨 식별번호', state.audit.drawId], ['추첨 시각', formatDateTime(state.audit.drawnAt)], ['공개번호', state.audit.publicNumber], ['명단 검증코드', state.audit.rosterHash], ['결과 검증코드', state.audit.resultHash], [], ['종별','라운드','경기번호','경기시간','팀A','점수A','팀B','점수B','승자','구분']];
+      const rows = [['대회명', state.eventName], ['종목', state.sportName], ['프로그램 제작', CREATOR], ['추첨 식별번호', state.audit.drawId], ['추첨 시각', formatDateTime(state.audit.drawnAt)], ['공개번호', state.audit.publicNumber], ['명단 검증코드', state.audit.rosterHash], ['결과 검증코드', state.audit.resultHash], [], ['종별','경기방식','라운드','경기번호','경기시간','팀A','점수A','팀B','점수B','승자/결과','구분']];
       state.result.divisions.forEach(d => {
-        const progress = deriveDivisionProgress(d);
-        progress.forEach((round, ri) => round.forEach(m => rows.push([
-          d.divisionName, roundTitle(d.bracketSize, ri), m.id, matchScheduledTime(d.divisionId, m),
-          m.a, m.scoreA, m.b, m.scoreB, m.winner,
-          m.byeTeam ? (m.forcedBye ? '예외 부전승' : '부전승') : (m.tie ? '동점 확인' : '경기')
-        ])));
+        if (isLeagueDivision(d)) {
+          d.rounds.forEach((round,ri) => round.forEach(m => {
+            const r=leagueMatchResult(d,m);
+            rows.push([d.divisionName,'리그전',leagueRoundLabel(d,ri),`${d.divisionName}-${m.gameNo}`,matchScheduledTime(d.divisionId,m),m.a,r.scoreA,m.b,r.scoreB,r.draw?'무승부':r.winner,`${leagueTypeLabel(d)} · ${leagueRankingRuleInfo(d).label}`]);
+          }));
+        } else {
+          const progress = deriveDivisionProgress(d);
+          progress.forEach((round, ri) => round.forEach(m => rows.push([
+            d.divisionName,'토너먼트',roundTitle(d.bracketSize, ri),m.id,matchScheduledTime(d.divisionId, m),
+            m.a,m.scoreA,m.b,m.scoreB,m.winner,
+            m.byeTeam ? (m.forcedBye ? '예외 부전승' : '부전승') : (m.tie ? '동점 확인' : '경기')
+          ])));
+        }
       });
       downloadBlob('\uFEFF' + rows.map(r => r.map(csvEscape).join(',')).join('\r\n'), `${safeFileName(state.eventName)}_대진표.csv`, 'text/csv;charset=utf-8');
     }
@@ -3518,7 +4134,26 @@
         if (!byDivision.has(info.divisionId)) byDivision.set(info.divisionId, []);
         byDivision.get(info.divisionId).push(info);
       });
-      byDivision.forEach(infos => {
+
+      byDivision.forEach((infos, divisionId) => {
+        const division = state.result?.divisions?.find(d => d.divisionId === divisionId);
+        const league = Boolean(division && isLeagueDivision(division));
+
+        // 리그전 경기번호는 대진 생성 시 부여된 gameNo를 끝까지 고정한다.
+        // 실제 경기시간 순서가 바뀌어도 화면·타임테이블·CSV·엑셀에서 같은 번호를 사용한다.
+        if (league) {
+          infos.forEach(info => {
+            const fixedNo = Number(info.match?.gameNo || info.match?.matchNo || 0);
+            map.set(info.key, {
+              number: fixedNo,
+              label: `${info.divisionName}-${fixedNo}`,
+              info
+            });
+          });
+          return;
+        }
+
+        // 토너먼트는 기존 방식대로 실제 경기시간 순서에 따라 경기번호를 부여한다.
         infos.sort((a,b) =>
           a.startMinute - b.startMinute ||
           a.court - b.court ||
@@ -3541,7 +4176,11 @@
       const key = `${divisionId}|${match.id}`;
       const numbered = numberMap.get(key);
       const info = numbered?.info || matchScheduledInfo(divisionId, match);
-      const label = numbered?.label || info?.divisionName || '';
+      const division = state.result?.divisions?.find(d => d.divisionId === divisionId);
+      const fixedLeagueLabel = division && isLeagueDivision(division)
+        ? `${division.divisionName}-${match.gameNo || match.matchNo || ''}`
+        : '';
+      const label = numbered?.label || fixedLeagueLabel || info?.divisionName || '';
       if (!label) return '';
       const showDetails = normalizeSchedule().showDetails === true;
       if (!showDetails || !info) return `[${label}]`;
@@ -3552,6 +4191,13 @@
       const s = cleanText(name);
       const m = s.match(/^(R\d+-M\d+)\s*승자$/);
       return m ? `승자(${m[1]})` : s;
+    }
+
+    function excelResolvedMatch(divisionId, match) {
+      const d = state.result?.divisions?.find(x => x.divisionId === divisionId);
+      if (!d || !match) return match;
+      if (isLeagueDivision(d)) return leagueMatchResult(d, match);
+      return derivedMatchFor(divisionId, match.id) || match;
     }
 
     function operationSheetDefinitions(bundle, numberMap) {
@@ -3598,10 +4244,15 @@
       infos.forEach((info, i) => {
         const r = dataStart + i;
         const numbered = numberMap.get(info.key);
-        const dm = derivedMatchFor(info.divisionId, info.match.id) || info.match;
+        const dm = excelResolvedMatch(info.divisionId, info.match);
         const teamText = `${operationTeamLabel(dm.a)} vs ${operationTeamLabel(dm.b)}`;
         const colorStyle = 14 + ((divisionIndex.get(info.divisionId) || 0) % 8);
-        const matchLabel = numbered?.label || `${info.divisionName}-${i+1}`;
+        const division = state.result?.divisions?.find(d => d.divisionId === info.divisionId);
+        const matchLabel = numbered?.label || (
+          division && isLeagueDivision(division)
+            ? `${info.divisionName}-${info.match?.gameNo || info.match?.matchNo || ''}`
+            : `${info.divisionName}-${i+1}`
+        );
 
         if (showDetails) {
           add(r,1,`${info.time}~${info.endTime}`,12);
@@ -3659,6 +4310,192 @@
       </worksheet>`;
     }
 
+    function leagueExcelRows(d, numberMap = excelMatchNumberMap()) {
+      const rows = [];
+      (d.rounds || []).forEach((round, ri) => {
+        round.forEach((m, mi) => {
+          const key = `${d.divisionId}|${m.id}`;
+          const numbered = numberMap.get(key);
+          const info = numbered?.info || matchScheduledInfo(d.divisionId, m);
+          const result = leagueMatchResult(d, m);
+          rows.push({
+            roundIndex:ri,
+            roundName:leagueRoundLabel(d,ri),
+            matchIndex:mi,
+            match:m,
+            result,
+            info,
+            number:Number(m.gameNo || m.matchNo || numbered?.number || 0),
+            label:`${d.divisionName}-${m.gameNo || m.matchNo || numbered?.number || ''}`
+          });
+        });
+      });
+      return rows.sort((a,b) => a.number - b.number || a.roundIndex - b.roundIndex || a.matchIndex - b.matchIndex);
+    }
+
+    function buildLeagueScheduleSheetXml(d, numberMap = excelMatchNumberMap()) {
+      const showDetails = normalizeSchedule().showDetails === true;
+      const data = leagueExcelRows(d, numberMap);
+      const rows = new Map(), rowHeights = new Map(), merges = [];
+      const add = (r,c,v,st=0) => { if(!rows.has(r)) rows.set(r,[]); rows.get(r).push({c,xml:excelCell(r,c,v,st)}); };
+      const merge = (r1,c1,r2,c2) => merges.push(`${excelCol(c1)}${r1}:${excelCol(c2)}${r2}`);
+
+      const headers = showDetails
+        ? ['경기번호','라운드','시간','코트','팀 A','점수 A','점수 B','팀 B','결과']
+        : ['경기번호','라운드','팀 A','점수 A','점수 B','팀 B','결과'];
+      const totalCols = headers.length;
+      const lastCol = excelCol(totalCols);
+
+      merge(1,1,1,totalCols);
+      add(1,1,`${state.eventName}${state.sportName ? ' · ' + state.sportName : ''} · ${d.divisionName} 리그전 경기일정`,1);
+      rowHeights.set(1,32);
+      merge(2,1,2,totalCols);
+      add(2,1,`${leagueTypeLabel(d)} · 참가 ${d.teamCount}팀 · 총 ${d.totalMatches}경기 · ${leagueRankingRuleInfo(d).label} · 추첨번호 ${state.audit?.drawId || ''} · 제작 ${CREATOR}`,6);
+      rowHeights.set(2,21);
+
+      headers.forEach((h,i)=>add(4,i+1,h,11));
+      rowHeights.set(4,27);
+
+      const divisionIndex = Math.max(0, state.result.divisions.findIndex(x => x.divisionId === d.divisionId));
+      const matchStyle = 14 + (divisionIndex % 8);
+
+      data.forEach((x, idx) => {
+        const r = 5 + idx;
+        const resultText = !x.result.complete ? '' : (x.result.draw ? '무승부' : `${x.result.winner} 승`);
+        if (showDetails) {
+          add(r,1,x.label,matchStyle);
+          add(r,2,x.roundName,12);
+          add(r,3,x.info ? `${x.info.time}~${x.info.endTime}` : '',12);
+          add(r,4,x.info ? `${x.info.court}` : '',12);
+          add(r,5,x.match.a,12);
+          add(r,6,x.result.scoreA,12);
+          add(r,7,x.result.scoreB,12);
+          add(r,8,x.match.b,12);
+          add(r,9,resultText,12);
+        } else {
+          add(r,1,x.label,matchStyle);
+          add(r,2,x.roundName,12);
+          add(r,3,x.match.a,12);
+          add(r,4,x.result.scoreA,12);
+          add(r,5,x.result.scoreB,12);
+          add(r,6,x.match.b,12);
+          add(r,7,resultText,12);
+        }
+        rowHeights.set(r,23);
+      });
+
+      const lastRow = Math.max(4, 4 + data.length);
+      const cols = showDetails
+        ? `<cols>
+            <col min="1" max="1" width="16" customWidth="1"/>
+            <col min="2" max="2" width="12" customWidth="1"/>
+            <col min="3" max="3" width="18" customWidth="1"/>
+            <col min="4" max="4" width="9" customWidth="1"/>
+            <col min="5" max="5" width="24" customWidth="1"/>
+            <col min="6" max="7" width="10" customWidth="1"/>
+            <col min="8" max="8" width="24" customWidth="1"/>
+            <col min="9" max="9" width="20" customWidth="1"/>
+          </cols>`
+        : `<cols>
+            <col min="1" max="1" width="16" customWidth="1"/>
+            <col min="2" max="2" width="12" customWidth="1"/>
+            <col min="3" max="3" width="24" customWidth="1"/>
+            <col min="4" max="5" width="10" customWidth="1"/>
+            <col min="6" max="6" width="24" customWidth="1"/>
+            <col min="7" max="7" width="20" customWidth="1"/>
+          </cols>`;
+
+      const rowXml=[...rows.keys()].sort((a,b)=>a-b).map(r=>{
+        const h=rowHeights.get(r), cs=rows.get(r).sort((a,b)=>a.c-b.c).map(x=>x.xml).join('');
+        return `<row r="${r}"${h?` ht="${h}" customHeight="1"`:''}>${cs}</row>`;
+      }).join('');
+
+      return `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+      <worksheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main">
+        <dimension ref="A1:${lastCol}${lastRow}"/>
+        <sheetViews><sheetView workbookViewId="0" showGridLines="0"><pane ySplit="4" topLeftCell="A5" activePane="bottomLeft" state="frozen"/></sheetView></sheetViews>
+        <sheetFormatPr defaultRowHeight="18"/>
+        ${cols}
+        <sheetData>${rowXml}</sheetData>
+        ${merges.length?`<mergeCells count="${merges.length}">${merges.map(m=>`<mergeCell ref="${m}"/>`).join('')}</mergeCells>`:''}
+        <pageMargins left="0.25" right="0.25" top="0.4" bottom="0.4" header="0.2" footer="0.2"/>
+        <pageSetup orientation="landscape" fitToWidth="1" fitToHeight="0" paperSize="9"/>
+      </worksheet>`;
+    }
+
+    function buildLeagueStandingsSheetXml(d) {
+      const standings = leagueStandings(d);
+      const completed = (d.rounds || []).flat().filter(m => leagueMatchResult(d,m).complete).length;
+      const rows = new Map(), rowHeights = new Map(), merges = [];
+      const add = (r,c,v,st=0) => { if(!rows.has(r)) rows.set(r,[]); rows.get(r).push({c,xml:excelCell(r,c,v,st)}); };
+      const merge = (r1,c1,r2,c2) => merges.push(`${excelCol(c1)}${r1}:${excelCol(c2)}${r2}`);
+      const headers = ['순위','팀','추첨순번','경기','승','무','패','득점','실점','득실','승점'];
+      const totalCols = headers.length;
+      const lastCol = excelCol(totalCols);
+
+      merge(1,1,1,totalCols);
+      add(1,1,`${state.eventName}${state.sportName ? ' · ' + state.sportName : ''} · ${d.divisionName} 리그전 순위표`,1);
+      rowHeights.set(1,32);
+      merge(2,1,2,totalCols);
+      add(2,1,`${leagueTypeLabel(d)} · ${completed}/${d.totalMatches}경기 완료 · ${leagueRankingRuleInfo(d).label} · 승 3점 · 무 1점 · 패 0점`,6);
+      rowHeights.set(2,21);
+
+      headers.forEach((h,i)=>add(4,i+1,h,11));
+      rowHeights.set(4,27);
+
+      standings.forEach((t, idx) => {
+        const r = 5 + idx;
+        const st = idx === 0 ? 4 : 12;
+        [idx+1,t.name,t.seedNo,t.played,t.wins,t.draws,t.losses,t.scored,t.conceded,t.diff,t.points]
+          .forEach((v,i)=>add(r,i+1,v,st));
+        rowHeights.set(r,23);
+      });
+
+      const noteRow = 6 + standings.length;
+      merge(noteRow,1,noteRow,totalCols);
+      add(noteRow,1,`※ 순위 기준: ${leagueRankingRuleInfo(d).description}`,6);
+      rowHeights.set(noteRow,22);
+
+      const rowXml=[...rows.keys()].sort((a,b)=>a-b).map(r=>{
+        const h=rowHeights.get(r), cs=rows.get(r).sort((a,b)=>a.c-b.c).map(x=>x.xml).join('');
+        return `<row r="${r}"${h?` ht="${h}" customHeight="1"`:''}>${cs}</row>`;
+      }).join('');
+
+      return `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+      <worksheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main">
+        <dimension ref="A1:${lastCol}${noteRow}"/>
+        <sheetViews><sheetView workbookViewId="0" showGridLines="0"><pane ySplit="4" topLeftCell="A5" activePane="bottomLeft" state="frozen"/></sheetView></sheetViews>
+        <sheetFormatPr defaultRowHeight="18"/>
+        <cols>
+          <col min="1" max="1" width="8" customWidth="1"/>
+          <col min="2" max="2" width="25" customWidth="1"/>
+          <col min="3" max="3" width="11" customWidth="1"/>
+          <col min="4" max="7" width="8" customWidth="1"/>
+          <col min="8" max="11" width="10" customWidth="1"/>
+        </cols>
+        <sheetData>${rowXml}</sheetData>
+        ${merges.length?`<mergeCells count="${merges.length}">${merges.map(m=>`<mergeCell ref="${m}"/>`).join('')}</mergeCells>`:''}
+        <pageMargins left="0.3" right="0.3" top="0.4" bottom="0.4" header="0.2" footer="0.2"/>
+        <pageSetup orientation="landscape" fitToWidth="1" fitToHeight="1" paperSize="9"/>
+      </worksheet>`;
+    }
+
+    function validateGeneratedWorksheetXml(sheet) {
+      const xml = String(sheet?.xml || '');
+      if (!xml.includes('<worksheet') || !xml.includes('<sheetData>') || !xml.includes('</worksheet>')) {
+        throw new Error(`${sheet?.name || '시트'}: 엑셀 시트 XML이 올바르지 않습니다.`);
+      }
+      // Excel worksheet 요소 순서 오류 방지.
+      const autoFilterPos = xml.indexOf('<autoFilter');
+      const mergeCellsPos = xml.indexOf('<mergeCells');
+      if (autoFilterPos >= 0 && mergeCellsPos >= 0 && autoFilterPos > mergeCellsPos) {
+        throw new Error(`${sheet?.name || '시트'}: 필터/병합셀 XML 순서 오류가 감지되었습니다.`);
+      }
+      const dim = xml.match(/<dimension ref="([^"]+)"/)?.[1] || '';
+      if (!dim) throw new Error(`${sheet?.name || '시트'}: 사용 영역 정보가 없습니다.`);
+      return true;
+    }
+
     // 추첨 결과를 실제 .xlsx 대진표로 저장합니다. (외부 라이브러리 불필요)
     function exportXlsxBracket() {
       if (!state.result) return;
@@ -3666,15 +4503,33 @@
         const bundle = timetableBundle();
         const numberMap = excelMatchNumberMap(bundle);
         const usedSheetNames = new Set();
-        const divisionSheets = state.result.divisions.map(d => ({
-          name: xlsxSafeSheetName(d.divisionName, usedSheetNames),
-          xml: buildBracketSheetXml(d, numberMap)
-        }));
+        const divisionSheets = [];
+
+        state.result.divisions.forEach(d => {
+          if (isLeagueDivision(d)) {
+            divisionSheets.push({
+              name: xlsxSafeSheetName(`${d.divisionName} 경기일정`, usedSheetNames),
+              xml: buildLeagueScheduleSheetXml(d, numberMap)
+            });
+            divisionSheets.push({
+              name: xlsxSafeSheetName(`${d.divisionName} 순위표`, usedSheetNames),
+              xml: buildLeagueStandingsSheetXml(d)
+            });
+          } else {
+            divisionSheets.push({
+              name: xlsxSafeSheetName(d.divisionName, usedSheetNames),
+              xml: buildBracketSheetXml(d, numberMap)
+            });
+          }
+        });
+
         const operationSheets = operationSheetDefinitions(bundle, numberMap).map(sh => ({
           name: xlsxSafeSheetName(sh.name, usedSheetNames),
           xml: sh.xml
         }));
+
         const sheets = [...divisionSheets, ...operationSheets];
+        sheets.forEach(validateGeneratedWorksheetXml);
         const bytes = makeZip(buildXlsxPackage(sheets));
         const blob = new Blob([bytes], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
         const url = URL.createObjectURL(blob);
@@ -3683,7 +4538,10 @@
         a.download = `${safeFileName(state.eventName)}${state.sportName ? '_' + safeFileName(state.sportName) : ''}_대진표.xlsx`;
         document.body.appendChild(a); a.click(); a.remove();
         setTimeout(() => URL.revokeObjectURL(url), 1000);
-        toast(`운영표 ${operationSheets.length}개와 경기번호가 포함된 엑셀 대진표를 저장했습니다.${normalizeSchedule().showDetails === true ? ' 경기시간·코트도 함께 표시됩니다.' : ''}`);
+
+        const leagueCount = state.result.divisions.filter(d => isLeagueDivision(d)).length;
+        const tournamentCount = state.result.divisions.length - leagueCount;
+        toast(`엑셀 저장 완료 · 토너먼트 ${tournamentCount}종별 · 리그전 ${leagueCount}종별 · 운영표 ${operationSheets.length}개`);
       } catch (err) {
         console.error(err);
         alert('엑셀 파일 생성 중 오류가 발생했습니다.');
@@ -3949,6 +4807,7 @@
       document.querySelectorAll('#printAllResults .division-result').forEach(section => {
         const divisionId = section.dataset.division;
         const d = state.result?.divisions?.find(x => x.divisionId === divisionId);
+        if (isLeagueDivision(d)) return;
         const n = d?.teamCount || 16;
         const rounds = d?.rounds?.length || 4;
         let cfg;
