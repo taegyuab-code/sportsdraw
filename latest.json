@@ -1,14 +1,16 @@
 {
-  "version": "1.5.11",
-  "releasedAt": "2026-08-28",
+  "version": "1.6.0",
+  "releasedAt": "2026-09-01",
   "notes": [
-    "더블리그 경기카드의 팀 A에 홈, 팀 B에 원정 배지 표시",
-    "2회차에는 팀 A/B가 반대로 생성되므로 홈/원정 배지도 자동으로 반전",
-    "단일리그에는 홈/원정 배지를 표시하지 않음",
-    "리그방식 ? 도움말에 더블리그 홈/어웨이 방식 설명 추가",
-    "리그전 결과 안내에도 더블리그 홈/어웨이 운영 설명 추가",
-    "v1.5.10 및 리그전 엑셀 오류 수정 기능 유지"
+    "무료 웹배포 모드 추가: 웹주소 접속과 오프라인 HTML 실행을 자동 구분",
+    "웹버전은 웹버전 · 자동 최신 배지와 웹버전 안내를 표시",
+    "웹버전에 오프라인용 HTML 다운로드 버튼 추가",
+    "오프라인 버전은 기존 최신버전 확인 및 다운로드 기능 유지",
+    "입력 데이터의 브라우저 저장 방식과 백업 필요성을 홈 화면에 명확히 안내",
+    "GitHub Pages용 index.html 배포 구조 지원",
+    "v1.5.11의 토너먼트·리그전·더블리그·홈/원정·타임테이블·엑셀 기능 유지"
   ],
   "downloadApiUrl": "https://api.github.com/repos/taegyuab-code/school-sports-draw-updates/contents/latest.html?ref=main",
-  "downloadUrl": "https://raw.githubusercontent.com/taegyuab-code/school-sports-draw-updates/main/latest.html"
+  "downloadUrl": "https://raw.githubusercontent.com/taegyuab-code/school-sports-draw-updates/main/latest.html",
+  "webUrl": "https://taegyuab-code.github.io/school-sports-draw-updates/"
 }

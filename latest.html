@@ -645,6 +645,15 @@
       background: #eef2f8; color: #44516b; border: 1px solid #d8dfeb;
       font: 10px/1.2 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
     }
+    .distribution-badge {
+      display:inline-flex; align-items:center; padding:4px 8px; border-radius:999px;
+      font-size:10px; line-height:1.2; font-weight:900; border:1px solid #d8dfeb;
+      background:#f5f7fb; color:#526078;
+    }
+    .distribution-badge.web { background:#eaf8f1; color:#176242; border-color:#bde0ce; }
+    .distribution-badge.offline { background:#fff5e8; color:#9a5b12; border-color:#edd4b1; }
+    .local-data-note strong { color:#33415f; }
+
     .update-status {
       padding: 13px 14px; border-radius: 13px; border: 1px solid var(--line); background: #fbfcff;
       font-size: 12px; line-height: 1.65;
@@ -857,9 +866,9 @@
       <div>
         <h1>교내 학교스포츠클럽 대진 추첨</h1>
         <p>종별과 팀 수를 자유롭게 설정하고, 참가팀 명단과 공개 추첨번호로 공정하게 대진을 추첨합니다.</p>
-        <div class="local-data-note">※ 모든 데이터는 현재 사용 중인 PC의 브라우저에만 저장되며 다른 사용자와 공유되지 않습니다.</div>
+        <div class="local-data-note"><strong>데이터 안내</strong> · 입력한 참가팀과 대진 기록은 서버로 전송되지 않고 현재 브라우저에 저장됩니다. 브라우저 데이터를 삭제하면 기록이 사라질 수 있으므로 중요한 대진은 엑셀 또는 기록 백업 기능을 이용해 주세요.</div>
         <div class="maker-credit">제작 <strong>부산백양고 신태규</strong></div>
-        <div class="version-line"><span>현재 버전</span><span class="version-badge" id="currentVersionBadge">v1.5.11</span></div>
+        <div class="version-line"><span>현재 버전</span><span class="version-badge" id="currentVersionBadge">v1.6.0</span><span class="distribution-badge" id="distributionModeBadge">실행방식 확인 중</span></div>
       </div>
       <div class="hero-tools no-print">
         <button class="btn btn-soft" id="fullscreenBtn">전체화면</button>
@@ -867,6 +876,7 @@
         <button class="btn btn-soft" id="featuresBtn">주요기능</button>
         <button class="btn btn-soft" id="historyBtn">지난 대진 보기</button>
         <button class="btn btn-soft" id="updateBtn">최신버전 확인</button>
+        <button class="btn btn-success hidden" id="offlineDownloadBtn">오프라인용 다운로드</button>
         <button class="btn btn-soft" id="inquiryBtn">오류 및 문의사항</button>
         <button class="btn btn-soft" id="verifyBtn">추첨 증명서 검증</button>
         <input id="verifyFile" type="file" accept="application/json,.json" class="hidden" />
@@ -875,7 +885,7 @@
     </header>
 
     <section class="workflow no-print">
-      <div class="step active" id="step1"><span class="num">1</span><span>종별·팀 수 설정</span></div>
+      <div class="step active" id="step1"><span class="num">1</span><span>종별·팀 수·방식 설정</span></div>
       <div class="step" id="step2"><span class="num">2</span><span>참가팀 입력·명단 잠금</span></div>
       <div class="step" id="step3"><span class="num">3</span><span>공개 추첨번호 입력</span></div>
       <div class="step" id="step4"><span class="num">4</span><span>전체 종별 1회 추첨</span></div>
@@ -1081,7 +1091,7 @@
           </div>
           <div class="feature-card">
             <h3>💻 설치 없이 사용</h3>
-            <p>HTML 파일 하나를 크롬·엣지에서 바로 실행할 수 있으며 인터넷이 없어도 핵심 기능을 사용할 수 있습니다.</p>
+            <p>웹주소에서는 설치 없이 바로 사용할 수 있고, 오프라인용 HTML을 내려받으면 인터넷이 없어도 동일한 핵심 기능을 사용할 수 있습니다.</p>
           </div>
         </div>
         <div class="feature-summary">학교스포츠클럽 및 교내 체육대회의 대진 추첨부터 경기 운영, 결과 관리, 엑셀 출력까지 한 번에 처리할 수 있도록 제작한 무료 프로그램입니다.</div>
@@ -1100,7 +1110,7 @@
       </div>
       <div class="modal-body">
         <div class="notice notice-info" style="font-size:13px;line-height:1.8">
-          <strong>① 종별·팀 수 설정</strong> → 대회에 필요한 종별과 참가팀 수를 정합니다.<br>
+          <strong>① 종별·팀 수·방식 설정</strong> → 대회에 필요한 종별, 경기방식과 참가팀 수를 정합니다.<br>
           <strong>② 참가팀 입력 및 명단 잠금</strong> → 팀명을 입력하고 부전승 제외 여부를 확인한 뒤 명단을 확정합니다.<br>
           <strong>③ 공개 추첨번호 입력</strong> → 추첨에 사용할 4~12자리 번호와 번호 출처를 입력합니다.<br>
           <strong>④ 공개 추첨</strong> → 최종 확인 후 한 번만 추첨하며 결과는 즉시 확정됩니다.<br>
@@ -1124,7 +1134,7 @@
       <div class="modal-body">
         <div class="update-status" id="updateStatus">최신 버전 정보를 확인하려면 아래 버튼을 눌러 주세요.</div>
         <div class="update-version-grid">
-          <div class="k">현재 버전</div><div class="v" id="updateCurrentVersion">v1.5.11</div>
+          <div class="k">현재 버전</div><div class="v" id="updateCurrentVersion">v1.6.0</div>
           <div class="k">최신 버전</div><div class="v" id="updateLatestVersion">확인 전</div>
           <div class="k">마지막 업데이트</div><div class="v" id="updateReleasedAt">확인 전</div>
           <div class="k">제작</div><div class="v">부산백양고 신태규</div>
@@ -1136,6 +1146,7 @@
         <div class="update-notes" style="margin-top:10px">
           <strong>최근 업데이트 이력</strong>
           <ul>
+            <li><strong>v1.6.0</strong> · 무료 웹배포 모드, 웹/오프라인 자동 구분, 오프라인용 다운로드 및 데이터 안내 강화</li>
             <li><strong>v1.5.11</strong> · 더블리그 경기카드에 홈/원정 배지 추가 및 리그방식 도움말 보강</li>
             <li><strong>v1.5.10</strong> · 종별 설정의 리그방식 항목에 단일/더블리그 설명 도움말 추가</li>
             <li><strong>v1.5.9</strong> · 리그전 엑셀 경기일정 시트의 XML 구조 오류 수정</li>
@@ -1225,7 +1236,10 @@
     'use strict';
 
     const APP_VERSION = '4.0.0-SCHOOL';
-    const RELEASE_VERSION = '1.5.11';
+    const RELEASE_VERSION = '1.6.0';
+    const IS_WEB_MODE = location.protocol === 'http:' || location.protocol === 'https:';
+    const OFFLINE_DOWNLOAD_PATH = './latest.html';
+    const PUBLIC_WEB_URL = 'https://taegyuab-code.github.io/school-sports-draw-updates/';
     const UPDATE_API_URL = 'https://api.github.com/repos/taegyuab-code/school-sports-draw-updates/contents/latest.json?ref=main';
     const LATEST_HTML_API_URL = 'https://api.github.com/repos/taegyuab-code/school-sports-draw-updates/contents/latest.html?ref=main';
     const UPDATE_SCRIPT_URLS = [];
@@ -4901,11 +4915,74 @@
       return 0;
     }
 
+    function applyDistributionMode() {
+      const badge = $('distributionModeBadge');
+      const updateBtn = $('updateBtn');
+      const offlineBtn = $('offlineDownloadBtn');
+      if (badge) {
+        badge.className = `distribution-badge ${IS_WEB_MODE ? 'web' : 'offline'}`;
+        badge.textContent = IS_WEB_MODE ? '웹버전 · 자동 최신' : '오프라인 버전';
+      }
+      if (updateBtn) updateBtn.textContent = IS_WEB_MODE ? '웹버전 안내' : '최신버전 확인';
+      if (offlineBtn) offlineBtn.classList.toggle('hidden', !IS_WEB_MODE);
+    }
+
+    async function downloadOfflineCopy() {
+      if (!IS_WEB_MODE) {
+        alert('현재 오프라인 HTML 파일로 실행 중입니다.\n이미 인터넷 없이 사용할 수 있는 버전입니다.');
+        return;
+      }
+      const btn = $('offlineDownloadBtn');
+      const original = btn?.textContent || '오프라인용 다운로드';
+      if (btn) { btn.disabled = true; btn.textContent = '파일 준비 중...'; }
+      try {
+        const response = await fetch(`${OFFLINE_DOWNLOAD_PATH}?_=${Date.now()}`, { cache:'no-store' });
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        const html = await response.text();
+        if (!/^\s*<!doctype html/i.test(html) && !/^\s*<html/i.test(html)) throw new Error('HTML 파일 형식 오류');
+        const blob = new Blob([html], { type:'text/html;charset=utf-8' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `학교스포츠클럽_대진추첨_v${RELEASE_VERSION}.html`;
+        document.body.appendChild(a); a.click(); a.remove();
+        setTimeout(() => URL.revokeObjectURL(url), 1500);
+        toast(`오프라인용 v${RELEASE_VERSION} 다운로드를 시작했습니다.`);
+      } catch (err) {
+        console.warn('Offline copy download failed:', err);
+        alert('오프라인용 파일을 내려받지 못했습니다.\n잠시 후 다시 시도하거나 최신버전 안내에서 파일을 내려받아 주세요.');
+      } finally {
+        if (btn) { btn.disabled = false; btn.textContent = original; }
+      }
+    }
+
     function openUpdateModal() {
       $('updateCurrentVersion').textContent = `v${RELEASE_VERSION}`;
       $('currentVersionBadge').textContent = `v${RELEASE_VERSION}`;
       $('updateModal').classList.remove('hidden');
-      checkForUpdates();
+
+      const modal = $('updateModal');
+      const title = modal?.querySelector('.modal-head h2');
+      const desc = modal?.querySelector('.modal-head p');
+      const checkBtn = $('checkUpdateBtn');
+      const downloadBtn = $('downloadUpdateBtn');
+
+      if (IS_WEB_MODE) {
+        if (title) title.textContent = '웹버전 안내';
+        if (desc) desc.textContent = '웹주소로 접속한 경우 별도의 업데이트 설치가 필요하지 않습니다. 같은 주소에 접속하면 배포된 최신 버전을 사용합니다.';
+        $('updateLatestVersion').textContent = `v${RELEASE_VERSION}`;
+        $('updateReleasedAt').textContent = '웹 자동 배포';
+        $('updateStatus').className = 'update-status success';
+        $('updateStatus').innerHTML = `<strong>✓ 현재 웹버전을 사용하고 있습니다.</strong><br>업데이트 파일을 따로 받을 필요가 없습니다. 오프라인 사용이 필요하면 상단의 「오프라인용 다운로드」를 이용하세요.`;
+        $('updateNotesBox').classList.add('hidden');
+        checkBtn?.classList.add('hidden');
+        downloadBtn?.classList.add('hidden');
+      } else {
+        if (title) title.textContent = '프로그램 최신버전 확인';
+        if (desc) desc.textContent = '업데이트 확인에만 인터넷을 사용합니다. 인터넷이 연결되지 않아도 대진 추첨 기능은 그대로 사용할 수 있습니다.';
+        checkBtn?.classList.remove('hidden');
+        checkForUpdates();
+      }
     }
 
     function closeUpdateModal() {
@@ -5008,6 +5085,10 @@
     }
 
     async function checkForUpdates() {
+      if (IS_WEB_MODE) {
+        openUpdateModal();
+        return;
+      }
       const status = $('updateStatus');
       const latestEl = $('updateLatestVersion');
       const releasedEl = $('updateReleasedAt');
@@ -5152,6 +5233,7 @@
     $('featuresBtn').addEventListener('click', openFeaturesModal);
     $('historyBtn').addEventListener('click', openHistoryModal);
     $('updateBtn').addEventListener('click', openUpdateModal);
+    $('offlineDownloadBtn').addEventListener('click', downloadOfflineCopy);
     $('inquiryBtn').addEventListener('click', () => {
       window.open('https://forms.gle/7gynFzshUz9uYE5k9', '_blank', 'noopener,noreferrer');
     });
@@ -5205,6 +5287,7 @@
     $('currentVersionBadge').textContent = `v${RELEASE_VERSION}`;
     loadState();
     renderAll();
+    applyDistributionMode();
   
     $('closeTimetableBtn').addEventListener('click', () => $('timetableModal').classList.add('hidden'));
 
