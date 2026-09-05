@@ -1,0 +1,125 @@
+name: Sync release metadata
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'latest.html'
+      - '.github/workflows/sync-release-metadata.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Normalize release files
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          from datetime import date
+          import json
+          import os
+          import re
+
+          html_path = Path('latest.html')
+          json_path = Path('latest.json')
+          index_path = Path('index.html')
+
+          html = html_path.read_text(encoding='utf-8')
+          before = html
+          initial_cleanup = ('부산백양고 신태규' in html) or ('school-sports-draw-updates' in html)
+
+          # Keep the single-HTML program intact; normalize only distribution metadata/credit.
+          html = html.replace('부산백양고 신태규', '99')
+          html = html.replace('school-sports-draw-updates', 'sportsdraw')
+
+          if '부산백양고 신태규' in html:
+              raise SystemExit('Old creator credit still remains in latest.html')
+          if 'school-sports-draw-updates' in html:
+              raise SystemExit('Old repository slug still remains in latest.html')
+          if "const APP_VERSION = '4.0.0-SCHOOL';" not in html:
+              raise SystemExit('APP_VERSION changed unexpectedly')
+          if "const STORAGE_KEY = 'schoolSportsClubDrawV1';" not in html:
+              raise SystemExit('Primary LocalStorage key changed unexpectedly')
+          if "const HISTORY_KEY = 'schoolSportsClubDrawHistoryV1';" not in html:
+              raise SystemExit('History LocalStorage key changed unexpectedly')
+
+          version_match = re.search(r"const RELEASE_VERSION\s*=\s*'([^']+)';", html)
+          if not version_match:
+              raise SystemExit('RELEASE_VERSION not found')
+          version = version_match.group(1)
+
+          required_urls = [
+              'https://taegyuab-code.github.io/sportsdraw/',
+              'https://api.github.com/repos/taegyuab-code/sportsdraw/contents/latest.json?ref=main',
+              'https://api.github.com/repos/taegyuab-code/sportsdraw/contents/latest.html?ref=main',
+          ]
+          for url in required_urls:
+              if url not in html:
+                  raise SystemExit(f'Expected current repository URL missing: {url}')
+
+          if html != before:
+              html_path.write_text(html, encoding='utf-8')
+
+          info = json.loads(json_path.read_text(encoding='utf-8'))
+          old_version = str(info.get('version', ''))
+          info['version'] = version
+          if old_version and old_version != version:
+              info['releasedAt'] = date.today().isoformat()
+          info['downloadApiUrl'] = 'https://api.github.com/repos/taegyuab-code/sportsdraw/contents/latest.html?ref=main'
+          info['downloadUrl'] = 'https://raw.githubusercontent.com/taegyuab-code/sportsdraw/main/latest.html'
+          info['webUrl'] = 'https://taegyuab-code.github.io/sportsdraw/'
+          json_path.write_text(json.dumps(info, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
+
+          if 'school-sports-draw-updates' in json_path.read_text(encoding='utf-8'):
+              raise SystemExit('Old repository slug still remains in latest.json')
+
+          index = index_path.read_text(encoding='utf-8')
+          if 'latest.html' not in index:
+              raise SystemExit('index.html no longer routes to latest.html')
+
+          with open(os.environ['GITHUB_ENV'], 'a', encoding='utf-8') as env:
+              env.write('COMMIT_MESSAGE=' + ('Fix repository URLs and update creator credit' if initial_cleanup else 'Sync latest release metadata') + '\n')
+          PY
+
+      - name: Check JavaScript syntax
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+          html = Path('latest.html').read_text(encoding='utf-8')
+          scripts = re.findall(r'<script(?:\s[^>]*)?>(.*?)</script>', html, flags=re.S|re.I)
+          Path('/tmp/sportsdraw-inline.js').write_text('\n'.join(scripts), encoding='utf-8')
+          PY
+          node --check /tmp/sportsdraw-inline.js
+
+      - name: Validate minimal changes
+        shell: bash
+        run: |
+          git diff --check
+          grep -Fq "const RELEASE_VERSION = '1.6.0';" latest.html || true
+          ! grep -Fq '부산백양고 신태규' latest.html
+          ! grep -Fq 'school-sports-draw-updates' latest.html
+          ! grep -Fq 'school-sports-draw-updates' latest.json
+
+      - name: Commit synchronized files
+        shell: bash
+        run: |
+          if git diff --quiet -- latest.html latest.json; then
+            echo 'No release file changes to commit.'
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add latest.html latest.json
+          git commit -m "$COMMIT_MESSAGE"
+          git push
