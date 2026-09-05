@@ -867,7 +867,7 @@
         <h1>교내 학교스포츠클럽 대진 추첨</h1>
         <p>종별과 팀 수를 자유롭게 설정하고, 참가팀 명단과 공개 추첨번호로 공정하게 대진을 추첨합니다.</p>
         <div class="local-data-note"><strong>데이터 안내</strong> · 입력한 참가팀과 대진 기록은 서버로 전송되지 않고 현재 브라우저에 저장됩니다. 브라우저 데이터를 삭제하면 기록이 사라질 수 있으므로 중요한 대진은 엑셀 또는 기록 백업 기능을 이용해 주세요.</div>
-        <div class="maker-credit">제작 <strong>부산백양고 신태규</strong></div>
+        <div class="maker-credit">제작 <strong>99</strong></div>
         <div class="version-line"><span>현재 버전</span><span class="version-badge" id="currentVersionBadge">v1.6.0</span><span class="distribution-badge" id="distributionModeBadge">실행방식 확인 중</span></div>
       </div>
       <div class="hero-tools no-print">
@@ -1137,7 +1137,7 @@
           <div class="k">현재 버전</div><div class="v" id="updateCurrentVersion">v1.6.0</div>
           <div class="k">최신 버전</div><div class="v" id="updateLatestVersion">확인 전</div>
           <div class="k">마지막 업데이트</div><div class="v" id="updateReleasedAt">확인 전</div>
-          <div class="k">제작</div><div class="v">부산백양고 신태규</div>
+          <div class="k">제작</div><div class="v">99</div>
         </div>
         <div class="update-notes hidden" id="updateNotesBox">
           <strong>최신버전 업데이트 내용</strong>
@@ -1239,15 +1239,15 @@
     const RELEASE_VERSION = '1.6.0';
     const IS_WEB_MODE = location.protocol === 'http:' || location.protocol === 'https:';
     const OFFLINE_DOWNLOAD_PATH = './latest.html';
-    const PUBLIC_WEB_URL = 'https://taegyuab-code.github.io/school-sports-draw-updates/';
-    const UPDATE_API_URL = 'https://api.github.com/repos/taegyuab-code/school-sports-draw-updates/contents/latest.json?ref=main';
-    const LATEST_HTML_API_URL = 'https://api.github.com/repos/taegyuab-code/school-sports-draw-updates/contents/latest.html?ref=main';
+    const PUBLIC_WEB_URL = 'https://taegyuab-code.github.io/sportsdraw/';
+    const UPDATE_API_URL = 'https://api.github.com/repos/taegyuab-code/sportsdraw/contents/latest.json?ref=main';
+    const LATEST_HTML_API_URL = 'https://api.github.com/repos/taegyuab-code/sportsdraw/contents/latest.html?ref=main';
     const UPDATE_SCRIPT_URLS = [];
     const FALLBACK_DOWNLOAD_URL = LATEST_HTML_API_URL;
     const STORAGE_KEY = 'schoolSportsClubDrawV1';
     const HISTORY_KEY = 'schoolSportsClubDrawHistoryV1';
     const HISTORY_LIMIT = 30;
-    const CREATOR = '부산백양고 신태규';
+    const CREATOR = '99';
     const DEFAULT_DIVISIONS = [
       { id: 'division_1', name: '남자부', count: 6, gameFormat: 'tournament' }
     ];

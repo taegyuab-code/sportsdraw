@@ -10,7 +10,7 @@
     "GitHub Pages용 index.html 배포 구조 지원",
     "v1.5.11의 토너먼트·리그전·더블리그·홈/원정·타임테이블·엑셀 기능 유지"
   ],
-  "downloadApiUrl": "https://api.github.com/repos/taegyuab-code/school-sports-draw-updates/contents/latest.html?ref=main",
-  "downloadUrl": "https://raw.githubusercontent.com/taegyuab-code/school-sports-draw-updates/main/latest.html",
-  "webUrl": "https://taegyuab-code.github.io/school-sports-draw-updates/"
+  "downloadApiUrl": "https://api.github.com/repos/taegyuab-code/sportsdraw/contents/latest.html?ref=main",
+  "downloadUrl": "https://raw.githubusercontent.com/taegyuab-code/sportsdraw/main/latest.html",
+  "webUrl": "https://taegyuab-code.github.io/sportsdraw/"
 }
